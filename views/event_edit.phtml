@@ -1,0 +1,99 @@
+<form action="" method="POST">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Termin bearbeiten</h4>
+      </div>
+      <div class="modal-body">
+	      
+	      <div class="form-group">
+		  	<label>Name</label>
+		  	<input type="text" name="name" class="form-control" value="<?= $this->event->name ?>">
+  		  </div>
+  		  
+  		  <div class="form-group">
+		  	<label>Ort</label>
+		  	<input type="text" name="location" class="form-control" value="<?= $this->event->location ?>">
+  		  </div>
+  		  
+  		  <div class="form-group">
+		  	<label>Informationen</label>
+		  	<textarea type="text" name="description" class="form-control" placeholder="z.B. Spielmodus, Rahmenprogramm, Hinweise ..." resize="0" rows="5"><?= $this->event->description ?></textarea>
+  		  </div>
+  		  
+  		  <div class="form-group">
+	  		  <label for="date">Datum</label>
+	  		  	<div class="input-append date" id="datetimepicker">
+	  		  	<input id="date" name="date" class="form-control bootstrapdatepicker" value="<?= date( "d.m.Y", $this->event->date) ?>">
+	  		  	<span class="add-on"><i class="icon-th"></i></span>
+			  </div>
+  		  </div>
+  		  
+  		  <div class="form-group">
+	  		  <label>Teamfee</label>
+		  	<div class="input-group">
+	  		  
+  		  	<div class="input-group-addon">€</div>
+  		  	<input type="text" class="form-control" name="teamfee" value="<?= $this->event->teamfee ?>">
+    	  </div>
+  		  </div>
+  		  
+  		  
+    	  <div class="form-group">
+	  		  <label>Playersfee</label>
+		  	<div class="input-group">
+	  		  
+  		  	<div class="input-group-addon">€</div>
+  		  	<input type="text" class="form-control" name="playersfee" value="<?= $this->event->playersfee ?>">
+    	  </div>
+  		  </div>
+  		  
+  		  <div class="form-group">
+	  		  <label>Damen</label>
+		  	<div class="form-inline">
+	  		  
+  		  		<div class="form-group">
+  		  			<label for="exampleInputName2">Min</label>
+  		  			<input type="text" class="form-control" value="<?= $this->event->girls_min ?>" name="girls_min">
+  				</div>
+  				
+  				<div class="form-group">
+  					<label>Max</label>
+  					<input type="text" class="form-control" value="<?= $this->event->girls_max ?>" name="girls_max">
+  				</div>
+    	  	</div>
+  		  </div>
+  		  
+  		  <div class="form-group">
+	  		  <label>Herren</label>
+		  	<div class="form-inline">
+	  		  
+  		  		<div class="form-group">
+  		  			<label for="exampleInputName2">Min</label>
+  		  			<input type="text" class="form-control" value="<?= $this->event->boys_min ?>" name="boys_min">
+  				</div>
+  				
+  				<div class="form-group">
+  					<label>Max</label>
+  					<input type="text" class="form-control" value="<?= $this->event->boys_max ?>" name="boys_max">
+  				</div>
+    	  	</div>
+  		  </div>
+  
+  		  <div class="form-group">
+  		  	<label>Status</label>
+  		  	<select class="form-control" name="status">
+	   			<option value="safe" <?= $this->event->status == "safe" ? "selected" : "" ?> >bestätigt</option>
+	   			<option value="unsafe" <?= $this->event->status == "unsafe" ? "selected" : "" ?>>unbestätigt</option>
+	   			<option value="canceled" <?= $this->event->status == "canceled" ? "selected" : "" ?>>abgesagt</option>
+	   			<option value="optional" <?= $this->event->status == "optional" ? "selected" : "" ?>>optional</option>
+			</select>
+  		  </div>
+      </div>
+      <div class="modal-footer">
+        <a href="<?= getBase() ?>events/<?= $this->event->id ?>" class="btn btn-default">Abbrechen</a>
+        <button type="submit" class="btn btn-primary">Speichern</button>
+      </div>
+    </div>
+  </div>
+  </form>

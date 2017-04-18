@@ -1,0 +1,13 @@
+{
+    "require": {
+        "gabordemooij/redbean": "dev-master",
+        "phpmailer/phpmailer": "^5.2",
+        "klein/klein": "^2.1"
+    },
+    "scripts": {
+        "post-update-cmd": [
+    
+        ]
+    }
+    
+}

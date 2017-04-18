@@ -1,0 +1,139 @@
+<div class='page-header'>
+  <div class='btn-toolbar pull-right'>
+    <div class='btn-group'>
+      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newEventModal"> Neuer Termin </button>
+    </div>
+  </div>
+  <h1>Termine <small>Übersicht</small> </h1>
+</div>
+
+<div id="eventlist">
+	<table class="table table-striped table-hover" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th colspan="4">
+					<input class="search form-control" placeholder="Suche..." />
+				</th>
+			</tr>
+			<tr>
+			<th width="25%"><button class="sort btn form-control btn-sm btn-default asc" data-sort="name">Titel</button></th>
+			<th class="hidden-xs"><button class="sort btn form-control btn-sm btn-default" data-sort="location">Ort</button></th>
+			<th width="25%"><button class="sort btn form-control btn-sm btn-default" data-sort="date">Datum</button></th>
+			<th width="25%"><button class="sort btn form-control btn-sm btn-default" data-sort="status">Status</button></th>
+			<tr>
+		</thead>
+		<tbody class="list">
+			<?php  foreach($this->events as $event): ?>
+			<tr>
+			<td><a class="name" href="<?= getBase() ?>events/<?= $event->id ?>"><?= $event->name ?></a></td>
+			<td class="location hidden-xs"><?= $event->location ?></td>
+			<td class="text-center"><span class="date text-hide"><?= $event->date ?></span><?= date( "d.m.Y", $event->date) ?></td>
+			<td class="text-right"><span class="status label label-<?= status2class($event->status) ?>"><?= status2text($event->status) ?></span></td>
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+</div>		
+
+
+<div class="modal fade" id="newEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <form action="<?= getBase() ?>event" method="POST">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Termin hinzufügen</h4>
+      </div>
+      <div class="modal-body">
+	      
+	      <div class="form-group">
+		  	<label>Name</label>
+		  	<input type="text" name="name" class="form-control">
+  		  </div>
+  		  
+  		  <div class="form-group">
+		  	<label>Ort</label>
+		  	<input type="text" name="location" class="form-control">
+  		  </div>
+  		  
+  		  <div class="form-group">
+		  	<label>Informationen</label>
+		  	<textarea type="text" name="description" class="form-control" placeholder="z.B. Spielmodus, Rahmenprogramm, Hinweise ..." resize="0" rows="5"></textarea>
+  		  </div>
+  		  
+  		  <div class="form-group">
+	  		  <label for="date">Datum</label>
+	  		  	<div class="input-append date" id="datetimepicker">
+	  		  	<input id="date" name="date" class="form-control bootstrapdatepicker">
+	  		  	<span class="add-on"><i class="icon-th"></i></span>
+			  </div>
+  		  </div>
+  		  
+  		  <div class="form-group">
+	  		  <label>Teamfee</label>
+		  	<div class="input-group">
+	  		  
+  		  	<div class="input-group-addon">€</div>
+  		  	<input type="text" class="form-control" name="teamfee">
+    	  </div>
+  		  </div>
+  		  
+  		  
+    	  <div class="form-group">
+	  		  <label>Playersfee</label>
+		  	<div class="input-group">
+	  		  
+  		  	<div class="input-group-addon">€</div>
+  		  	<input type="text" class="form-control" name="playersfee">
+    	  </div>
+  		  </div>
+  		  
+  		  <div class="form-group">
+	  		  <label>Damen</label>
+		  	<div class="form-inline">
+	  		  
+  		  		<div class="form-group">
+  		  			<label for="exampleInputName2">Min</label>
+  		  			<input type="text" class="form-control" value=0 name="boys_min">
+  				</div>
+  				
+  				<div class="form-group">
+  					<label>Max</label>
+  					<input type="text" class="form-control" value=99 name="boys_max">
+  				</div>
+    	  	</div>
+  		  </div>
+  		  
+  		  <div class="form-group">
+	  		  <label>Herren</label>
+		  	<div class="form-inline">
+	  		  
+  		  		<div class="form-group">
+  		  			<label for="exampleInputName2">Min</label>
+  		  			<input type="text" class="form-control" value=0 name="girls_min">
+  				</div>
+  				
+  				<div class="form-group">
+  					<label>Max</label>
+  					<input type="text" class="form-control" value=99 name="girls_max">
+  				</div>
+    	  	</div>
+  		  </div>
+  
+  		  <div class="form-group">
+  		  	<label>Status</label>
+  		  	<select class="form-control" name="status">
+	   			<option value="safe">besätigt</option>
+	   			<option value="unsafe">unbestätigt</option>
+	   			<option value="canceled">abgesagt</option>
+	   			<option value="optional">optional</option>
+			</select>
+  		  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+        <button type="submit" class="btn btn-primary">Speichern</button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>

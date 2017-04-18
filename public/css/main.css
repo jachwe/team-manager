@@ -1,0 +1,64 @@
+
+#loginmodal{
+	padding-top: 20%;
+}
+
+.gmapframe,.avatarframe{
+	position: relative;
+        padding-bottom: 100%; // This is the aspect ratio
+        height: 0;
+        overflow: hidden;
+}
+iframe.gmap,.avatarframe img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+        border: none;
+}
+
+table td{
+	white-space: nowrap;
+	text-overflow:ellipsis; 
+	overflow: hidden; 
+	max-width:1px;
+}
+
+#alertbox{
+	position: relative;
+}
+
+#alertbox .alert{
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	z-index: 100;
+}
+
+.flexrow{
+	display: flex;
+	
+}
+
+.flexrow input,.flexrow select{
+	flex: 4;
+	min-width: 200px;
+	margin-right: 10px;
+}
+
+.flexrow button{
+	flex: 1 0;
+	margin-left: 10px;
+}
+
+.preformatted{
+	white-space: pre-wrap;
+}
+
+.messagelist{
+	max-height: 600px;
+	overflow-y: scroll;
+	border: 1px solid silver;
+	border-radius: 5px;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><?php getName() ?></title>
+    <link href="<?= getBase() ?>public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= getBase() ?>public/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="<?= getBase() ?>public/css/sb-admin.css" rel="stylesheet">
+    <link href="<?= getBase() ?>public/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= getBase() ?>public/css/main.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+   <div class="container">
+	   
+	   <?php 
+		          foreach($this->flashes() as $type=>$flash):
+		          	foreach($flash as $flash=>$msg):
+	            ?>
+
+				<div class="alert alert-<?= $type ?> alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<p><?= $msg ?></p>
+				</div>
+				
+				<?php 
+					 endforeach;
+		          endforeach;  
+	            ?>
+	   
+<div class="modal" id="loginmodal" tabindex="-1" role="dialog" style="display:block">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title text-center"><?= getName()?></h4>
+      </div>
+      <div class="modal-body ">
+        <form class="form-signin" action="" method="POST">
+        <label for="inputPassword" class="sr-only">Passwort</label>
+        <input type="password" name="password" id="inputPassword" class="form-control text-center" placeholder="Passwort" required autofocus>
+        <div>&nbsp;</div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Anmelden</button>
+      </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+   
+    <script>
+	    var jsbase = '<?= getBase() ?>';
+    </script>
+    <script src="<?= getBase() ?>public/js/jquery.js"></script>
+    <script src="<?= getBase() ?>public/js/bootstrap.min.js"></script>
+    <script src="<?= getBase() ?>public/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="<?= getBase() ?>public/js/bootstrap-typeahead.js"></script>
+    <script src="<?= getBase() ?>public/js/list.js"></script>
+    <script src="<?= getBase() ?>public/js/main.js"></script>
+    
+</body>
+
+</html>

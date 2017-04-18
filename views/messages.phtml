@@ -1,0 +1,59 @@
+<div class='page-header'>
+  <div class='btn-toolbar pull-right'>
+    <div class='btn-group'>
+    </div>
+  </div>
+  <h1>Nachrichten <small>Verfassen</small> </h1>
+</div>
+
+<form class="row" method="POST" id="messageform">
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Empfänger
+			</div>
+			<div class="panel-body">
+				<div class="list-group">
+					<div class="list-group-item">
+						<input type="checkbox" class="togglebox" data-toggletarget="playerid[]"> Alle
+					</div>	
+				</div>	
+				<div class="list-group messagelist">
+					<?php foreach($this->players as $player): ?>
+							<div class="checkbox list-group-item">
+								<label>
+									<input type="checkbox" name="playerid[]" value="<?= $player['id'] ?>"> <?= $player['name'] ?>
+								</label>
+		  					</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="col-md-6">
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Nachricht
+			</div>
+			<div class="panel-body">
+				<input type="text" class="form-control" name="subject" placeholder="Betreff"/>
+				<textarea name="message" id="summernote"></textarea>
+			</div>
+		</div>
+		
+		
+	</div>
+	<div class="col-md-3">
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Aktionen
+			</div>
+			<div class="panel-body">
+				<button type="submit" class="btn btn-primary form-control">Senden</button>
+		</div>
+		
+	</div>
+</form>

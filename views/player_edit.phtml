@@ -1,0 +1,45 @@
+<form action="<?= getBase() ?>player/<?= $this->player->id ?>/edit" method="POST">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel">Spieler bearbeiten</h4>
+  </div>
+  <div class="modal-body">
+      
+      <div class="form-group">
+	  	<label>Name</label>
+	  	<input type="text" name="name" class="form-control" value="<?= $this->player->name ?>">
+		  </div>
+		  
+		  <div class="form-group">
+	  	<label>Email</label>
+	  	<input type="email" name="mail" class="form-control" value="<?= $this->player->mail ?>">
+		  </div>
+		  
+		  <div class="form-group">
+	  	<label>Rückennummer</label>
+	  	<input type="number" name="number" class="form-control" value="<?= $this->player->number ?>">
+		  </div>
+
+		  <div class="form-group">
+		  	<label>Geschlecht</label>
+		  	<select class="form-control" name="sex">
+   			<option value="w" <?= $this->player->sex == 'w' ? "selected" : "" ?>>Weiblich</option>
+   			<option value="m" <?= $this->player->sex == 'm' ? "selected" : "" ?>>Männlich</option>
+		</select>
+		  </div>
+		  
+		  <div class="checkbox">
+		  	<label>
+		  		<input type="checkbox" name="receiveMail" <?= $this->player->receiveMail == 1 ? "checked" : "" ?>> Abonniere Mailinglist
+		  	</label>
+		  </div>
+		  
+  </div>
+  <div class="modal-footer">
+    <a href="<?= getBase() ?>player/<?= $this->player->id ?>" class="btn btn-default" data-dismiss="modal">Abbrechen</a>
+    <button type="submit" class="btn btn-primary">Speichern</button>
+  </div>
+</div>
+</div>
+</form>
