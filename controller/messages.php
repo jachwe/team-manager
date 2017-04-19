@@ -4,7 +4,7 @@ $this->respond('GET','/?', function ($request, $response, $service) {
 	
 		checkLogin();
 		
-		$service->players = R::getAll('SELECT name,id FROM player ORDER BY name');
+		$service->players = R::getAll('SELECT name,id,mail FROM player ORDER BY name');
 
 		$service->render('./views/messages.phtml');
 	});

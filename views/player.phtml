@@ -1,4 +1,4 @@
-<h1 class="page-header">Spieler <small>Profil</small></h1>
+<h1 class="page-header"><?= $this->player->sex == 'w' ? 'Spielerin' : 'Spieler' ?> <small>Profil</small></h1>
 
 <h2>#<?= $this->player->number ?> - <?= $this->player->name ?></h2>
 
@@ -58,7 +58,7 @@
     		</div>
     		<div class="panel-body">
     			<div class="form-group">
-    				<button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#messageModal"> Nachricht an Spieler </button>
+    				<button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#messageModal"> Nachricht an <?= $this->player->sex == 'w' ? 'Spielerin' : 'Spieler' ?> </button>
     			</div>
     			<div class="form-group">
     				<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#transactionModal"> Transaktion </button>

@@ -3,7 +3,35 @@
 $this->respond('GET','/?',function($request, $response, $service){
 	checkLogin();
 	
-	$service->events = R::findAll('event',' archived IS NOT 1 ORDER BY date');
+	// $service->events = R::findAll('event',' archived IS NOT 1 ORDER BY date');
+
+	$q =  	"SELECT
+			e.name,
+			e.id,
+			e.location,
+			e.date,
+			e.status,
+			e.girls_min,
+			e.girls_max,
+			e.boys_min,
+			e.boys_max,
+				(SELECT COUNT(response.id) 
+				FROM response
+				JOIN player
+				ON player.id = response.player_id
+				WHERE response.event_id = e.id
+				AND player.sex = 'w'
+				AND response.status_id = 1) as girls,
+				(SELECT COUNT(response.id) 
+				FROM response
+				JOIN player
+				ON player.id = response.player_id
+				WHERE response.event_id = e.id
+				AND player.sex = 'm'
+				AND response.status_id = 1) as boys
+			FROM event as e WHERE archived IS NOT 1";
+	
+	$service->events = R::getAll($q);
 	$service->render('views/events.phtml');
 	
 });

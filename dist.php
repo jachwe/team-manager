@@ -29,7 +29,7 @@ $minifier->add('public/summernote/lang/summernote-de-DE.js');
 $minifier->add('public/js/main.js');
 
 
-echo $minifier->minify('public/js/dist.js');
+$minifier->minify('public/js/dist.js');
 
 // save minified file to disk
 // $minifiedPath = '/path/to/minified/css/file.css';

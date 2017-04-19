@@ -43,7 +43,7 @@ new List('playerlist', {
 })
 
 new List('eventlist', {
-  valueNames: [ 'name','location','date' ]
+  valueNames: [ 'name','location','date','status','count' ]
 })
 
 $('[data-toggle="popover"]').popover();
@@ -72,10 +72,10 @@ $('#messagereceiver').multiselect({
             },
      buttonText: function(options, select) {
                 if (options.length === 0) {
-                    return 'Keine EmpfängerInnen ausgewählt...';
+                    return 'Keine Empfänger*Innen ausgewählt...';
                 }
                 else if (options.length > 10) {
-                    return options.length + ' EmpfängerInnen';
+                    return options.length + ' Empfänger*Innen';
                 }
                  else {
                      var labels = [];

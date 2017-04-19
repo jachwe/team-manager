@@ -11,7 +11,7 @@
 	<table class="table table-striped table-hover" cellspacing="0" width="100%">
 		<thead>
 			<tr>
-				<th colspan="4">
+				<th colspan="5">
 					<input class="search form-control" placeholder="Suche..." />
 				</th>
 			</tr>
@@ -19,16 +19,18 @@
 			<th width="25%"><button class="sort btn form-control btn-sm btn-default asc" data-sort="name">Titel</button></th>
 			<th class="hidden-xs"><button class="sort btn form-control btn-sm btn-default" data-sort="location">Ort</button></th>
 			<th width="25%"><button class="sort btn form-control btn-sm btn-default" data-sort="date">Datum</button></th>
-			<th width="25%"><button class="sort btn form-control btn-sm btn-default" data-sort="status">Status</button></th>
+			<th width="15%" class="hidden-xs" ><button class="sort btn form-control btn-sm btn-default" data-sort="status">Status</button></th>
+      <th width="15%" class="hidden-xs"><button class="sort btn form-control btn-sm btn-default" data-sort="count">Zusagen</button></th>
 			<tr>
 		</thead>
 		<tbody class="list">
 			<?php  foreach($this->events as $event): ?>
-			<tr>
-			<td><a class="name" href="<?= getBase() ?>events/<?= $event->id ?>"><?= $event->name ?></a></td>
-			<td class="location hidden-xs"><?= $event->location ?></td>
-			<td class="text-center"><span class="date text-hide"><?= $event->date ?></span><?= date( "d.m.Y", $event->date) ?></td>
-			<td class="text-right"><span class="status label label-<?= status2class($event->status) ?>"><?= status2text($event->status) ?></span></td>
+			<tr class="<?= status2class($event['status']) ?>">
+			<td><a class="name" href="<?= getBase() ?>events/<?= $event['id'] ?>"><?= $event['name'] ?></a></td>
+			<td class="location hidden-xs"><?= $event['location'] ?></td>
+			<td class="text-center"><span class="date text-hide"><?= $event['date'] ?></span><?= date( "d.m.Y", $event['date']) ?></td>
+			<td class="text-center hidden-xs"><span class="status label label-<?= status2class($event['status']) ?>"><?= status2text($event['status']) ?></span></td>
+      <td class="text-right hidden-xs"><span class="count"><?= $event['boys'] + $event['girls'] ?></span>&nbsp;<small>(<?= $event['boys']?><i class="fa fa-mars"></i>/<?=$event['girls'] ?><i class="fa fa-venus"></i>)</small></td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>

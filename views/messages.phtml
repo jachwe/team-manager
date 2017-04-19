@@ -6,45 +6,32 @@
   <h1>Nachrichten <small>Verfassen</small> </h1>
 </div>
 
-<form method="POST" id="messageform">
-	<div class="row">
-		<div class="col-md-10">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Empfänger
-				</div>
-				<div class="panel-body">
-					<select id="messagereceiver" multiple="multiple">
-					    <?php foreach($this->players as $player): ?>
-					    <option value="<?= $player['id'] ?>"><?= $player['name'] ?></option>
-						<?php endforeach; ?>
-					</select>
-				</div>
+<div class="container-fluid">
+	<form method="POST" id="messageform">
+		<div class="panel panel-default">
+			<div class="panel-heading"> Empfänger*Innen </div>
+			<div class="panel-body">
+				<select id="messagereceiver" multiple="multiple">
+				<?php foreach($this->players as $player): ?>
+					<option value="<?= $player['id'] ?>"<?= $player['mail'] ? "" : " disabled"?>><?= $player['name'] ?></option>
+				<?php endforeach; ?>
+				</select>
 			</div>
-			
 		</div>
-		<div class="col-md-2">
-			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Aktionen
-				</div>
-				<div class="panel-body">
-					<button type="submit" class="btn btn-primary form-control">Senden</button>
-			</div>
-			
-		</div>
-	</div>	
-	<div class="row">
-		<div class="col-md-12">
-			<div class="panel">
-				<div class="panel-body">
+		<div class="panel panel-default">
+		<div class="panel-heading"> Nachricht </div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-10">
 					<input type="text" class="form-control" name="subject" placeholder="Betreff"/>
-					<div>&nbsp;</div>
-					<textarea name="message" id="summernote" placeholder="Nachricht"></textarea>
 				</div>
+				<div class="col-md-2">
+					<button type="submit" class="btn btn-primary form-control">Senden</button>
+				</div>
+			</div>
 			
 		</div>
-	</div>
-	
-</form>
+		<textarea name="message" id="summernote" placeholder="Nachricht"></textarea>
+		
+	</form>
+</div>

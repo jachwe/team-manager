@@ -62,3 +62,7 @@ table td{
 	border: 1px solid silver;
 	border-radius: 5px;
 }
+
+[class*="col-"] {
+    margin-bottom: 15px;
+}
