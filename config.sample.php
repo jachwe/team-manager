@@ -1,6 +1,10 @@
 <?php
 
 return (object) array(
+
+	'dev'	=> false
+	//if true, debug output is enabled and uncompressed files are included
+
     'appname' => 'Team Manager',
     // The title and heading of your webpage
     

@@ -59,10 +59,38 @@ $('#summernote').summernote({
   ]
 });
 
-$(".togglebox").on("click",function(){
-	
-	var target = $(this).data('toggletarget');
-	$('input[name="'+target+'"]').prop('checked', this.checked);
-})
+$('#messagereceiver').multiselect({
+	 enableFiltering: true,
+     includeSelectAllOption: true,
+     maxHeight: 400,
+     buttonWidth : '100%',
+     selectAllText : 'Alle auswählen',
+     filterPlaceholder : 'Suche...',
+     enableCaseInsensitiveFiltering : true,
+     checkboxName: function(option) {
+                return 'playerid[]';
+            },
+     buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Keine EmpfängerInnen ausgewählt...';
+                }
+                else if (options.length > 10) {
+                    return options.length + ' EmpfängerInnen';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            },
+
+ });
 
 })();
