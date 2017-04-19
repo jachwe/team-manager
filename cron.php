@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 class_alias('\RedBeanPHP\R','R');
 
 $conf = include('config.php');
-include('inc/mail.php');
+include('inc/common.php');
 include('db/setup.php');
 
 $mailbox = gethostbyname($conf->mail->host);

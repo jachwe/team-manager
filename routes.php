@@ -36,7 +36,6 @@ $klein->respond(array('POST','GET'),'/logout/?', function ($request, $response, 
 });
 
 $klein->respond('/?', function ($request, $response, $service) {
-	
 	$response->redirect(getBase().'events');
 });
 
@@ -45,6 +44,5 @@ $klein->with('/events?','./controller/events.php');
 $klein->with('/extern','./controller/external.php');
 $klein->with('/messages','./controller/messages.php');
 $klein->with('/player','./controller/player.php');
-
 
 $klein->dispatch();

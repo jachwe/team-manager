@@ -1,6 +1,5 @@
 <?php
 	
-
 $this->respond('GET','/?',function($request, $response, $service){
 	checkLogin();
 	
@@ -218,7 +217,7 @@ $this->respond('POST','/[i:id]/splitfee/?', function ($request, $response, $serv
 	});				
 	
 	
-$this->respond('POST','/[:id]/addPlayer/?', function ($request, $response, $service) use ($klein) {
+$this->respond('POST','/[:id]/addPlayer/?', function ($request, $response, $service) {
 	
 		checkLogin();
 		
