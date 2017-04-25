@@ -7,6 +7,7 @@ $conf = include('config.php');
 include('inc/common.php');
 include('db/setup.php');
 
+
 $mailbox = gethostbyname($conf->mail->host);
 $username = $conf->mail->user;
 $password = $conf->mail->password;
