@@ -4,7 +4,11 @@ $this->respond('GET','/?', function ($request, $response, $service,$app) {
 	
 		checkLogin();
 
-		$service->players = R::getAll( "SELECT player.id, player.name, player.number, mail, player.sex, (SELECT sum(DISTINCT payment.value) FROM payment WHERE player.id = payment.player_id) AS 'balance' FROM player ORDER BY player.name" );
+		$q = "SELECT player.id, player.name, player.number, player.mail, player.sex, 
+			  	(SELECT sum(DISTINCT payment.value) FROM payment  WHERE player.id = payment.player_id) AS 'balance'
+			  FROM player ORDER BY player.name";
+
+		$service->players = R::getAll( $q );
 		if( $service->players == NULL ){
 			$service->players = R::getAll( "SELECT player.id, player.name, player.number, mail, player.sex, 0 as balance FROM player ORDER BY player.name" );
 		}
@@ -29,12 +33,8 @@ $this->respond('GET','/json/?', function ($request, $response, $service,$app) {
 $this->respond('POST','/?', function ($request, $response, $service,$app) {
 		
 		checkLogin();
-		
+
 		$service->validateParam('name')->notNull();
-/*
-		$service->validateParam('mail')->isEmail();
-		$service->validateParam('sex')->notNull();
-*/
 
 		$player = R::dispense( 'player' );
 		
@@ -45,7 +45,7 @@ $this->respond('POST','/?', function ($request, $response, $service,$app) {
 		$player['receiveMail'] = $request->param('receiveMail') != null;
 
 		R::store( $player );
-
+		
 		$service->back();
 
 	});
@@ -60,6 +60,8 @@ $this->respond('GET','/[i:id]/?', function ($request, $response, $service) {
 		$service->player = $player;
 		$service->events = R::getAll('SELECT event.id as id, event.name as name, response.status_id as status FROM event JOIN response ON response.event_id = event.id WHERE response.player_id = ' . $player->id);
 		$service->balance = R::getCell('SELECT sum(value) as balance FROM payment WHERE player_id = ' . $player->id);
+
+		$service->groups = R::tag($player);
 		
 		$service->render('./views/player.phtml');
 		

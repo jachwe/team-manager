@@ -72,10 +72,10 @@ $('#messagereceiver').multiselect({
             },
      buttonText: function(options, select) {
                 if (options.length === 0) {
-                    return 'Keine Empfänger*Innen ausgewählt...';
+                    return 'Spieler*Innen auswählen';
                 }
                 else if (options.length > 10) {
-                    return options.length + ' Empfänger*Innen';
+                    return options.length + ' Spieler*Innen';
                 }
                  else {
                      var labels = [];

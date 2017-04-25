@@ -44,5 +44,6 @@ $klein->with('/events?','./controller/events.php');
 $klein->with('/extern','./controller/external.php');
 $klein->with('/messages','./controller/messages.php');
 $klein->with('/player','./controller/player.php');
+$klein->with('/groups?','./controller/group.php');
 
 $klein->dispatch();

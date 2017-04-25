@@ -1,165 +1,151 @@
 <h1 class="page-header"><?= $this->player->sex == 'w' ? 'Spielerin' : 'Spieler' ?> <small>Profil</small></h1>
-
 <h2>#<?= $this->player->number ?> - <?= $this->player->name ?></h2>
-
-
 <div class="row">
-	<div class="col-md-9">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title"><i class="fa fa-calendar fa-fw"></i> Turniere </h3>
-			</div>
-			<div class="panel-body">
-				<table class="table table-condensed table-hover table-responsive table-stripes">
-    				<tbody>
-	    				<?php foreach($this->events as $event) : ?>
-							<tr>
-		    					<td><a href="<?= getBase() . 'events/'. $event["id"] ?>"><?= $event['name'] ?></a></td>
-		    					<td><span class="label label-<?= $event['status'] == 1 ? 'success' : 'danger' ?> pull-right"><?= $event['status'] == 1 ? 'Zusage' : 'Absage' ?></span></td>
-		    					
-	    					</tr>
-	    			
-						<?php endforeach; ?>
-    				</tbody>
-				</table>
-			</div>
-		</div>
-
-		<div class="panel panel-default">
-			<div class="panel-heading clearfix">
-				<h3 class="panel-title pull-left"><i class="fa fa-fw fa-exchange"></i> Kontobewegungen</h3>
-	    		<h3 class="panel-title pull-right">Kontostand: <span class="label label-<?= $this->balance < 0 ? "danger" : "success" ?>"><?= number_format($this->balance,2) ?> €</span> </h3>
-			</div>
-			<div class="panel-body">
-				<table class="table table-condensed table-hover table-responsive table-stripes">
-    				<tbody>
-	    				<?php foreach($this->player->ownPaymentList as $payment) : ?>
-							<tr>
-		    					<td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"><?= $payment->description ?></td>
-		    					<td class="col-xs-2"><?= date( "d.m.y", $payment->date ) ?></td>
-		    					<td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap" class="col-xs-3 text-right text-<?= floatval($payment->value)<0 ? "danger" : "success" ?>"><?= number_format($payment->value,2)?> € </span></td>
-		    					
-	    					</tr>
-	    			
-						<?php endforeach; ?>
-    				</tbody>
-				</table>
-			</div>
-		</div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-calendar fa-fw"></i> Turniere </h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed table-hover table-responsive table-stripes">
+          <tbody>
+            <?php foreach($this->events as $event) : ?>
+            <tr>
+              <td><a href="<?= getBase() . 'events/'. $event["id"] ?>"><?= $event['name'] ?></a></td>
+              <td><span class="label label-<?= $event['status'] == 1 ? 'success' : 'danger' ?> pull-right"><?= $event['status'] == 1 ? 'Zusage' : 'Absage' ?></span></td>
+            </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
     </div>
-	<div class="col-md-3">
-		<div class="avatarframe hidden-sm hidden-xs">
-			<img src="https://api.adorable.io/avatars/250/<?= $this->player->id ?>.png"/>
-		</div>
-		
-		<div class="panel panel-default">
-    		<div class="panel-heading">
-    			<h3 class="panel-title"><i class="fa fa-cog fa-fw"></i> Optionen </h3>
-    		</div>
-    		<div class="panel-body">
-    			<div class="form-group">
-    				<button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#messageModal"> Nachricht an <?= $this->player->sex == 'w' ? 'Spielerin' : 'Spieler' ?> </button>
-    			</div>
-    			<div class="form-group">
-    				<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#transactionModal"> Transaktion </button>
-    			</div>
-    			<div class="form-group">
-    				<a class="btn btn-primary form-control" href="<?= getBase() . 'player/' . $this->player->id . '/edit' ?>"> Profil Bearbeiten </a>
-    			</div>
-    			<div class="form-group">
-    				<button type="button" class="btn btn-danger form-control" data-toggle="modal" data-target="#deletePlayerModal"> Profil löschen </button>
-    			</div>
-    		</div>
-    	</div>
-	</div>
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left"><i class="fa fa-fw fa-exchange"></i> Kontobewegungen</h3>
+        <h3 class="panel-title pull-right">Kontostand: <span class="label label-<?= $this->balance < 0 ? "danger" : "success" ?>"><?= number_format($this->balance,2) ?> €</span> </h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-condensed table-hover table-responsive table-stripes">
+          <tbody>
+            <?php foreach($this->player->ownPaymentList as $payment) : ?>
+            <tr>
+              <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"><?= $payment->description ?></td>
+              <td class="col-xs-2"><?= date( "d.m.y", $payment->date ) ?></td>
+              <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap" class="col-xs-3 text-right text-<?= floatval($payment->value)<0 ? "danger" : "success" ?>"><?= number_format($payment->value,2)?> € </span></td>
+            </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left"><i class="fa fa-fw fa-exchange"></i> Gruppen</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+            <?php foreach($this->groups as $group):?>
+            <div class="list-group-item clearfix">
+              <?= $group ?>
+            </div>
+            <?php endforeach;?>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="avatarframe hidden-sm hidden-xs">
+      <img src="https://api.adorable.io/avatars/250/<?= $this->player->id ?>.png"/>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-cog fa-fw"></i> Optionen </h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#messageModal"> Nachricht an <?= $this->player->sex == 'w' ? 'Spielerin' : 'Spieler' ?> </button>
+        </div>
+        <div class="form-group">
+          <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#transactionModal"> Transaktion </button>
+        </div>
+        <div class="form-group">
+          <a class="btn btn-primary form-control" href="<?= getBase() . 'player/' . $this->player->id . '/edit' ?>"> Profil Bearbeiten </a>
+        </div>
+        <div class="form-group">
+          <button type="button" class="btn btn-danger form-control" data-toggle="modal" data-target="#deletePlayerModal"> Profil löschen </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-
 <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <form action="<?= getBase() ?>player/<?= $this->player->id ?>/transaction" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Transaktion für <?= $this->player->name ?> hinzufügen</h4>
-      </div>
-      <div class="modal-body">
-	     
-	     
-	     <div class="form-group">
-		     <label>Betrag</label>
-		     <div class="input-group">
-			 	<div class="input-group-addon">€</div>
-			 	<input type="number" step="0.01" id="value" name="value" value="0.00"class="form-control">
-    		</div>
-		  	
-		  	
-  		 </div>
-  		 
-  		 <div class="form-group">
-		  	<label>Verwendungszweck</label>
-		  	<input type="text" name="description" class="form-control">
-  		 </div>
-  		  
-  		  
-      </div>
-      	
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-primary">Senden</button>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Transaktion für <?= $this->player->name ?> hinzufügen</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Betrag</label>
+            <div class="input-group">
+              <div class="input-group-addon">€</div>
+              <input type="number" step="0.01" id="value" name="value" value="0.00"class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Verwendungszweck</label>
+            <input type="text" name="description" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Senden</button>
+        </div>
       </div>
     </div>
-  </div>
   </form>
 </div>
-
 <div class="modal fade" id="deletePlayerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <form action="<?= getBase() ?>player/<?= $this->player->id ?>/delete" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Spieler löschen</h4>
-      </div>
-      <div class="modal-body">
-	      
-	      Möchtest Du <?= $this->player->name ?> wirklich löschen?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-danger">Löschen</button>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Spieler löschen</h4>
+        </div>
+        <div class="modal-body">
+          Möchtest Du <?= $this->player->name ?> wirklich löschen?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-danger">Löschen</button>
+        </div>
       </div>
     </div>
-  </div>
   </form>
 </div>
-
 <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <form action="<?= getBase() ?>player/<?= $this->player->id ?>/message" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Nachricht an <?= $this->player->name ?></h4>
-      </div>
-      <div class="modal-body">
-	      
-	     <div class="form-group">
-		  	<label>Betreff</label>
-		  	<input type="text" name="subject" class="form-control">
-  		 </div>
-  		 
-  		 <div class="form-group">
-		  	<label>Nachricht</label>
-		  	<textarea type="text" name="message" class="form-control"></textarea>
-  		 </div>
-  		  
-  		  
-      </div>
-      	
-      	
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-primary">Senden</button>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Nachricht an <?= $this->player->name ?></h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Betreff</label>
+            <input type="text" name="subject" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Nachricht</label>
+            <textarea type="text" name="message" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Senden</button>
+        </div>
       </div>
     </div>
-  </div>
   </form>
 </div>

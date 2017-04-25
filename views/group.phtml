@@ -1,0 +1,79 @@
+<h1 class="page-header">Gruppe</h1>
+<h2><?= $this->tag ?></h2>
+<div class="row">
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-group fa-fw"></i> Mitglieder </h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+        <?php foreach ($this->players as $player): ?>
+          <a class="list-group-item" href="<?= getBase() ?>player/<?= $player->id?>"><?= $player->name?></a>
+        <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-cog fa-fw"></i> Optionen </h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#messageModal"> Nachricht an Gruppe </button>
+        </div>
+        <div class="form-group">
+          <button type="button" class="btn btn-danger form-control" data-toggle="modal" data-target="#deleteGroupModal"> Gruppe löschen </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <form action="<?= getBase() ?>group/<?= $this->tagid ?>/delete" method="POST">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Gruppe löschen</h4>
+        </div>
+        <div class="modal-body">
+          Möchtest Du <?= $this->tag ?> wirklich löschen?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-danger">Löschen</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <form action="<?= getBase() ?>group/<?= $this->tagid ?>/message" method="POST">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Nachricht an <?= $this->tag ?></h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Betreff</label>
+            <input type="text" name="subject" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Nachricht</label>
+            <textarea type="text" name="message" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Senden</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -18,13 +18,6 @@ iframe.gmap,.avatarframe img {
         border: none;
 }
 
-table td{
-	white-space: nowrap;
-	text-overflow:ellipsis; 
-	overflow: hidden; 
-	max-width:1px;
-}
-
 #alertbox{
 	position: relative;
 }
@@ -65,4 +58,11 @@ table td{
 
 [class*="col-"] {
     margin-bottom: 15px;
+}
+
+td.text span{
+	display: inline-block;
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
