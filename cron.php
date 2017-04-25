@@ -126,10 +126,11 @@ foreach($unseen as $message_id){
 					}
 				}
 
+				$mail->setFrom($fromMail, $fromName . ' ' . $conf->mail->prefix);
 
 				$mail->isHTML(true);
 				$mail->CharSet = $charset;
-				$mail->Subject = $conf->mail->prefix . " ". $header->subject . " (".$fromName.")";
+				$mail->Subject = $header->subject;
 				$mail->Body    = $htmlmsg;
 				$mail->AltBody    = $plainmsg;
 
