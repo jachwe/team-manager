@@ -2,7 +2,7 @@
   <div class='btn-toolbar pull-right'>
     	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newGroupModal"> Neue Gruppe </button>
   </div>
-  <h1>Spieler*Innen <small>Übersicht</small></h1>
+  <h1>Gruppen <small>Übersicht</small></h1>
 </div>
 
 
@@ -41,7 +41,7 @@
 </div>
 
 <div class="modal fade" id="newGroupModal">
-  <form action="<?= getBase() ?>player" method="POST">
+  <form action="<?= getBase() ?>group" method="POST">
   <input type="hidden" name="action" value="newgroup">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
