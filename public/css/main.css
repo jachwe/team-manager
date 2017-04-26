@@ -62,7 +62,7 @@ iframe.gmap,.avatarframe img {
 
 td.text span{
 	display: inline-block;
-	max-width: 200px;
+	max-width: 250px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
