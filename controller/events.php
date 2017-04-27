@@ -87,7 +87,9 @@ $this->respond('GET','/[i:id]/?', function ($request, $response, $service) {
 		$service->negativecount = count($service->negative);
 		
 		$service->costpp = $service->playercount > 0 ? (intval($event->teamfee) / min($service->maxplayers,$service->playercount)) + $event->playersfee . "€" : "-";
-	
+			
+		$service->allplayers = R::findAll('player');
+
 		$service->girls_status = "default";
 		if( count($service->positive_w) < $event->girls_min ){
 			$service->girls_status = "danger";
@@ -248,28 +250,32 @@ $this->respond('POST','/[i:id]/splitfee/?', function ($request, $response, $serv
 $this->respond('POST','/[:id]/addPlayer/?', function ($request, $response, $service) {
 	
 		checkLogin();
-		
+		// R::fancyDebug( TRUE );
 		$id = $request->id;
 		$event = R::load('event',$id);
-		
-		$pid = $request->param('playerName');
-		
-		$player = R::getRow("SELECT * FROM player WHERE name LIKE '%". trim( $pid )."%'");
-		
-		$service->validate($player,'Diese/r Spieler*In existiert nicht. Bitte lege ihn/sie zuerst an.')->notNull();
-		
-		$player = R::load('player',$player['id']);
-		
-		$r = R::findOrCreate('response',array(
-			'event_id' 	=> $event->id,
-			'player_id'	=> $player->id
-		));
-		$r->event = $event;
-		$r->player = $player;
-		$r->time = $r->status->equals( R::enum('status:' . $request->param('status') ) ) ? $r->time : time();
-		$r->status = R::enum('status:' . $request->param('status') );
-		
-		R::store($r);
+
+		$pids = $request->param('playerid');
+
+
+
+		$status = $request->param('status');
+		$enum = R::enum('status:' . $status );
+
+		$q = 'DELETE FROM response WHERE player_id IN (' . implode(',', $pids) . ') AND event_id = ' . $event->id . ';';
+
+		R::exec( $q );
+
+		$q = 'INSERT INTO response (event_id,player_id,status_id,time) VALUES ';
+
+		$r = [];
+		foreach ($pids as $pid) {
+			
+			$r[] = '('.$event->id.','.$pid.','.$enum->id.','.time().')';
+		}
+		$q = $q . implode(",", $r);
+
+		R::exec( $q );
+
 		
 		$service->back();
 	});	
