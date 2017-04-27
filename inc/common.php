@@ -45,6 +45,7 @@ function createMailer(){
 	$mail->Port = $conf->mail->port;
 
 	$mail->setFrom($conf->mail->address, $conf->mail->name);
+	$mail->CharSet = 'UTF-8';
 
 	return $mail;
 }
