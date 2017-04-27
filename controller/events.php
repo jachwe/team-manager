@@ -88,7 +88,7 @@ $this->respond('GET','/[i:id]/?', function ($request, $response, $service) {
 		
 		$service->costpp = $service->playercount > 0 ? (intval($event->teamfee) / min($service->maxplayers,$service->playercount)) + $event->playersfee . "€" : "-";
 			
-		$service->allplayers = R::findAll('player');
+		$service->allplayers = R::findAll('player', ' ORDER BY name');
 
 		$service->girls_status = "default";
 		if( count($service->positive_w) < $event->girls_min ){

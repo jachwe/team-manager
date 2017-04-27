@@ -38,6 +38,8 @@ $this->respond('GET','/[i:id]/?', function ($request, $response, $service) {
 		$service->tag = $tag;
 		$service->tagid = $id;
 
+		$service->allplayers = R::findAll('player', ' ORDER BY name');
+
 		$service->players = R::tagged('player',$tag);
 		
 		$service->render('./views/group.phtml');
@@ -88,5 +90,35 @@ $this->respond('POST','/[i:id]/message/?', function ($request, $response, $servi
 			
 		}
 		
-	});	
+	});
+
+$this->respond('POST','/[:id]/add/?', function ($request, $response, $service) {
+	
+		checkLogin();
+		
+		$id = $request->id;
+		$tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id );
+
+		$players = R::loadAll('player',$request->param('playerid'));
+
+		foreach ($players as $player) {
+			R::addTags($player,$tag);
+		}
+		
+		$service->back();
+	});
+
+$this->respond('POST','/[:id]/remove/?', function ($request, $response, $service) {
+	
+		checkLogin();
+		
+		$id = $request->id;
+		$tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id );
+
+		$player = R::load('player',$request->param('playerid'));
+
+		R::untag($player,$tag);
+		
+		$service->back();
+	});			
 		

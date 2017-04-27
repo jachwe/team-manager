@@ -9,7 +9,14 @@
       <div class="panel-body">
         <div class="list-group">
         <?php foreach ($this->players as $player): ?>
-          <a class="list-group-item" href="<?= getBase() ?>player/<?= $player->id?>"><?= $player->name?></a>
+          <div class="list-group-item clearfix">
+            <a class="" href="<?= getBase() ?>player/<?= $player->id?>"><?= $player->name?></a>
+            <span class="pull-right button-group">
+                <form action="<?= getBase() ?>group/<?= $this->tagid ?>/remove" method="POST">
+                  <button name="playerid" value="<?= $player->id?>" type="submit" class="btn btn-danger label">Entfernen</button>
+                </form> 
+            </span>
+          </div>
         <?php endforeach; ?>
         </div>
       </div>
@@ -22,6 +29,9 @@
         <h3 class="panel-title"><i class="fa fa-cog fa-fw"></i> Optionen </h3>
       </div>
       <div class="panel-body">
+        <div class="form-group">
+          <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#addMemberModal"> Mitglieder hinzufügen </button>
+        </div>
         <div class="form-group">
           <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#messageModal"> Nachricht an Gruppe </button>
         </div>
@@ -38,7 +48,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Gruppe löschen</h4>
+          <h4 class="modal-title">Gruppe löschen</h4>
         </div>
         <div class="modal-body">
           Möchtest Du <?= $this->tag ?> wirklich löschen?
@@ -52,12 +62,12 @@
   </form>
 </div>
 
-<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="messageModal">
   <form action="<?= getBase() ?>group/<?= $this->tagid ?>/message" method="POST">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Nachricht an <?= $this->tag ?></h4>
+          <h4 class="modal-title">Nachricht an <?= $this->tag ?></h4>
         </div>
         <div class="modal-body">
           <div class="form-group">
@@ -72,6 +82,32 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
           <button type="submit" class="btn btn-primary">Senden</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="modal fade" id="addMemberModal"">
+  <form action="<?= getBase() ?>group/<?= $this->tagid ?>/add" method="POST">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Mitlgieder hinzufügen zu <?= $this->tag ?></h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <select id="messagereceiver" multiple="multiple">
+              <?php foreach($this->allplayers as $player): ?>
+              <option value="<?= $player['id'] ?>"<?= $player['mail'] ? "" : " disabled"?>><?= $player['name'] ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Hinzufügen</button>
         </div>
       </div>
     </div>
