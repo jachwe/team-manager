@@ -40,7 +40,7 @@ $this->respond('GET','/[i:id]/?', function ($request, $response, $service) {
 
 		$service->allplayers = R::findAll('player', ' ORDER BY name');
 
-		$service->players = R::tagged('player',$tag);
+		$service->players = R::getAll('SELECT name,player.id FROM player JOIN player_tag ON player_tag.player_id = player.id WHERE player_tag.tag_id = ' . $id . ' ORDER BY name');
 		
 		$service->render('./views/group.phtml');
 		

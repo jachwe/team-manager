@@ -10,7 +10,7 @@
         <div class="list-group">
         <?php foreach ($this->players as $player): ?>
           <div class="list-group-item clearfix">
-            <a class="" href="<?= getBase() ?>player/<?= $player->id?>"><?= $player->name?></a>
+            <a class="" href="<?= getBase() ?>player/<?= $player['id']?>"><?= $player['name']?></a>
             <span class="pull-right button-group">
                 <form action="<?= getBase() ?>group/<?= $this->tagid ?>/remove" method="POST">
                   <button name="playerid" value="<?= $player->id?>" type="submit" class="btn btn-danger label">Entfernen</button>
