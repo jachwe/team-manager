@@ -46,7 +46,7 @@
         <div class="list-group">
             <?php foreach($this->groups as $group):?>
             <div class="list-group-item clearfix">
-              <?= $group ?>
+              <a href="<?= getBase() . 'group/' . $group['id'] ?>"><?= $group['title'] ?></a>
             </div>
             <?php endforeach;?>
         </div>
