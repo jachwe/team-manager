@@ -250,13 +250,21 @@
         <h4 class="modal-title" id="myModalLabel">Nachricht an Teilnehmer</h4>
       </div>
       <div class="modal-body">
+        <div class="form-group">
+          <select id="messagesender" required="" name="senderid">
+            <option value="">Absender wählen</option>
+            <?php foreach($this->allplayers as $player): ?>
+              <option value="<?= $player['id'] ?>"<?= $player['mail'] ? "" : " disabled"?>><?= $player['name'] ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
 	      <div class="form-group">
 		      <label for="subject"></label>
 		      <input id="subject" name="subject" class="playerselect form-control" type="text" data-provide="typeahead" autocomplete="off" placeholder="Betreff">
 	      </div>
 	      <div class="form-group">
 		      <label for="comment"></label>
-		      <textarea id="comment" name="message" class="form-control" placeholder="Dein Kommentar"></textarea>
+          <textarea name="message" id="summernote" placeholder="Nachricht"></textarea>
 	      </div>
       </div>
       <div class="modal-footer">

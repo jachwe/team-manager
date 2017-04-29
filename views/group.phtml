@@ -71,6 +71,14 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
+            <select id="messagesender" required="" name="senderid">
+        <option value="">Absender wählen</option>
+        <?php foreach($this->allplayers as $player): ?>
+          <option value="<?= $player['id'] ?>"<?= $player['mail'] ? "" : " disabled"?>><?= $player['name'] ?></option>
+        <?php endforeach; ?>
+        </select>
+          </div>
+          <div class="form-group">
             <label>Betreff</label>
             <input type="text" name="subject" class="form-control">
           </div>
@@ -89,7 +97,7 @@
 </div>
 
 
-<div class="modal fade" id="addMemberModal"">
+<div class="modal fade" id="addMemberModal">
   <form action="<?= getBase() ?>group/<?= $this->tagid ?>/add" method="POST">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

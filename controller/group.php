@@ -1,124 +1,126 @@
 <?php
-	
-$this->respond('GET','/?', function ($request, $response, $service,$app) {
-	
-		checkLogin();
 
-		$q = "SELECT *,(SELECT count(player.id) FROM player JOIN player_tag ON player_tag.player_id = player.id WHERE player_tag.tag_id = tag.id) as members FROM tag";
+$this->respond('GET', '/?', function ($request, $response, $service, $app) {
 
-		$service->groups = R::getAll( $q );
-		$service->players = R::findAll( 'player' );
+    checkLogin();
 
-		$service->render('./views/groups.phtml');
-		
+    $q = "SELECT *,(SELECT count(player.id) FROM player JOIN player_tag ON player_tag.player_id = player.id WHERE player_tag.tag_id = tag.id) as members FROM tag";
 
-	});
-	
+    $service->groups  = R::getAll($q);
+    $service->players = R::findAll('player');
 
-$this->respond('POST','/?', function ($request, $response, $service,$app) {
-		
-		checkLogin();
+    $service->render('./views/groups.phtml');
 
-		$players = R::loadAll('player',$request->param('playerid'));
-		$name = $request->param('name');
-		foreach ($players as $player) {
-			R::addTags($player,$name);
-		}
-		
-		$service->back();
+});
 
-	});
+$this->respond('POST', '/?', function ($request, $response, $service, $app) {
 
-$this->respond('GET','/[i:id]/?', function ($request, $response, $service) {
-		checkLogin();
+    checkLogin();
 
-		$id = $request->id;
-		$tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id );
+    $players = R::loadAll('player', $request->param('playerid'));
+    $name    = $request->param('name');
+    foreach ($players as $player) {
+        R::addTags($player, $name);
+    }
 
-		$service->tag = $tag;
-		$service->tagid = $id;
+    $service->back();
 
-		$service->allplayers = R::findAll('player', ' ORDER BY name');
+});
 
-		$service->players = R::getAll('SELECT name,player.id FROM player JOIN player_tag ON player_tag.player_id = player.id WHERE player_tag.tag_id = ' . $id . ' ORDER BY name');
-		
-		$service->render('./views/group.phtml');
-		
-	});
+$this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
+    checkLogin();
 
-$this->respond('POST','/[i:id]/delete/?', function ($request, $response, $service) {
+    $id  = $request->id;
+    $tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id);
 
-		checkLogin();
+    $service->tag   = $tag;
+    $service->tagid = $id;
 
-		$id = $request->id;
+    $service->allplayers = R::findAll('player', ' ORDER BY name');
 
-		$q = "DELETE FROM tag WHERE id = " . $id ."; DELETE FROM player_tag WHERE tag_id = " . $is;
-		R::exec($q);
-		
-		$response->redirect(getBase() . 'group');
-	});
+    $service->players = R::getAll('SELECT name,player.id FROM player JOIN player_tag ON player_tag.player_id = player.id WHERE player_tag.tag_id = ' . $id . ' ORDER BY name');
 
-$this->respond('POST','/[i:id]/message/?', function ($request, $response, $service) {
-	
-		checkLogin();
+    $service->render('./views/group.phtml');
 
-		$id = $request->id;
-		$tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id );
+});
 
-		$players = R::tagged('player',$tag);
-		$mail = createMailer();
-		
-		$mail->setFrom('noreply@parkscheibe-ultimate.de', getConfig('mail')->name);
-				
-// 		$mail->SMTPDebug = 3;
-		foreach ($players as $player) {
-		 	$mail->addAddress($player->mail, $player->name);
-		} 
-		
-		$mail->isHTML(false);
-		
-		$mail->Subject = $request->param('subject');
-		$mail->Body    = $request->param('message');
-		$mail->AltBody    = $request->param('message');
-		
-		if( $mail->send() ){
-			$service->flash('Deine Nachricht an die Gruppe ' . $tag . ' wurde versendet.','success');
-			$service->back();
-		} else {
-			$service->flash($mail->ErrorInfo, 'danger');
-			$service->back();
-			
-		}
-		
-	});
+$this->respond('POST', '/[i:id]/delete/?', function ($request, $response, $service) {
 
-$this->respond('POST','/[:id]/add/?', function ($request, $response, $service) {
-	
-		checkLogin();
-		
-		$id = $request->id;
-		$tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id );
+    checkLogin();
 
-		$players = R::loadAll('player',$request->param('playerid'));
+    $id = $request->id;
 
-		foreach ($players as $player) {
-			R::addTags($player,$tag);
-		}
-		
-		$service->back();
-	});
+    $q = "DELETE FROM tag WHERE id = " . $id . "; DELETE FROM player_tag WHERE tag_id = " . $is;
+    R::exec($q);
 
-$this->respond('POST','/[:id]/remove/?', function ($request, $response, $service) {
-	
-		checkLogin();
-		
-		$id = $request->id;
-		$tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id );
+    $response->redirect(getBase() . 'group');
+});
 
-		$player = R::load('player',$request->param('playerid'));
+$this->respond('POST', '/[i:id]/message/?', function ($request, $response, $service) {
 
-		R::untag($player,$tag);
-		
-		$service->back();
-	});			
-		
+    checkLogin();
+
+    $id  = $request->id;
+    $tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id);
+
+    $players = R::tagged('player', $tag);
+
+    $sender = R::load('player', $request->param('senderid'));
+    $conf   = getConfig('mail');
+
+    $mail = createMailer();
+
+    $mail->AddReplyTo($sender->mail, $sender->name);
+    $mail->SetFrom($conf->address, $conf->name);
+
+    
+
+    foreach ($players as $player) {
+        $mail->addAddress($player->mail, $player->name);
+    }
+
+    $mail->isHTML(true);
+
+    $mail->Subject = $request->param('subject');
+    $mail->Body    = $request->param('message');
+
+    if ($mail->send()) {
+        $service->flash('Deine Nachricht an die Gruppe ' . $tag . ' wurde versendet.', 'success');
+        $service->back();
+    } else {
+        $service->flash($mail->ErrorInfo, 'danger');
+        $service->back();
+
+    }
+
+});
+
+$this->respond('POST', '/[:id]/add/?', function ($request, $response, $service) {
+
+    checkLogin();
+
+    $id  = $request->id;
+    $tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id);
+
+    $players = R::loadAll('player', $request->param('playerid'));
+
+    foreach ($players as $player) {
+        R::addTags($player, $tag);
+    }
+
+    $service->back();
+});
+
+$this->respond('POST', '/[:id]/remove/?', function ($request, $response, $service) {
+
+    checkLogin();
+
+    $id  = $request->id;
+    $tag = R::getCell('SELECT title FROM tag WHERE id = ' . $id);
+
+    $player = R::load('player', $request->param('playerid'));
+
+    R::untag($player, $tag);
+
+    $service->back();
+});

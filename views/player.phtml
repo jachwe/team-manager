@@ -78,7 +78,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="transactionModal">
   <form action="<?= getBase() ?>player/<?= $this->player->id ?>/transaction" method="POST">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -106,7 +106,7 @@
     </div>
   </form>
 </div>
-<div class="modal fade" id="deletePlayerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="deletePlayerModal">
   <form action="<?= getBase() ?>player/<?= $this->player->id ?>/delete" method="POST">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -124,7 +124,7 @@
     </div>
   </form>
 </div>
-<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="messageModal">
   <form action="<?= getBase() ?>player/<?= $this->player->id ?>/message" method="POST">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -132,6 +132,14 @@
           <h4 class="modal-title" id="myModalLabel">Nachricht an <?= $this->player->name ?></h4>
         </div>
         <div class="modal-body">
+          <div class="form-group">
+          <select id="messagesender" required="" name="senderid">
+            <option value="">Absender wählen</option>
+            <?php foreach($this->allplayers as $player): ?>
+              <option value="<?= $player['id'] ?>"<?= $player['mail'] ? "" : " disabled"?>><?= $player['name'] ?></option>
+            <?php endforeach; ?>
+            </select>
+        </div>
           <div class="form-group">
             <label>Betreff</label>
             <input type="text" name="subject" class="form-control">

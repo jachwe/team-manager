@@ -9,6 +9,17 @@
 <div class="container-fluid">
 	<form method="POST" id="messageform">
 		<div class="panel panel-default">
+			<div class="panel-heading"> Absender </div>
+			<div class="panel-body">
+				<select id="messagesender" required="" name="senderid">
+				<option value="">Absender wählen</option>
+				<?php foreach($this->players as $player): ?>
+					<option value="<?= $player['id'] ?>"<?= $player['mail'] ? "" : " disabled"?>><?= $player['name'] ?></option>
+				<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
+		<div class="panel panel-default">
 			<div class="panel-heading"> Empfänger*Innen </div>
 			<div class="panel-body">
 				<select id="messagereceiver" multiple="multiple">
