@@ -12,7 +12,7 @@ $this->respond('GET', '/?', function ($request, $response, $service) {
 
     $result = imap_fetch_overview($imap->handle, "1:{$status->messages}", 0);
 
-    $result = array_reverse($result);
+    // $result = array_reverse($result);
 
     $service->mails = $result;
 
