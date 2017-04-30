@@ -118,7 +118,17 @@ foreach($unseen as $message_id){
 			try{
 				$mail = createMailer();
 
-				$mail->addAddress($fromMail,$fromName);
+
+				if( $conf->mail->trap ){
+					$mail->AddReplyTo($conf->mail->address,$conf->mail->name);
+				} else {
+					$mail->AddReplyTo($sender->mail, $fromName);
+				}
+
+				
+    			$mail->SetFrom($conf->mail->address,$conf->mail->name);
+
+    			$mail->addAddress($fromMail,$fromName);
 
 				foreach($receiver as $p){
 					if($fromMail != $p['mail']){
@@ -126,19 +136,16 @@ foreach($unseen as $message_id){
 					}
 				}
 
-				$mail->setFrom($fromMail, $fromName . ' ' . $conf->mail->prefix);
+				$subject = $header->subject;
+				$subject = str_replace($conf->mail->prefix, '', $subject);
+				$subject = $conf->mail->prefix . " " . $subject;
+
 
 				$mail->isHTML(true);
 				$mail->CharSet = $charset;
-				$mail->Subject = $header->subject;
+				$mail->Subject = $subject;
 				$mail->Body    = $htmlmsg;
 				$mail->AltBody    = $plainmsg;
-
-				if( !$conf->mail->trap ){
-					$mail->addReplyTo($fromMail,$fromName);
-				} else {
-					$mail->addReplyTo($conf->mail->address,$conf->mail->name);
-				}
 
 				foreach($attachments as $aname=>$attachment){
 
