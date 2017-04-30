@@ -4,7 +4,7 @@ $klein = new \Klein\Klein();
 
 $klein->onError(function ($klein, $err_msg) {
         $klein->service()->flash($err_msg);
-        $klein->service()->back();
+        header("Location: " . getBase() );
 });
 
 $klein->respond('*', function ($request, $response, $service) {

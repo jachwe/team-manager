@@ -66,3 +66,7 @@ td.text span{
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+#abo{
+	padding: 10px;
+}

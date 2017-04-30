@@ -12,6 +12,7 @@
         <?php if(getConfig('dev')): ?>
         <link href="<?= getBase() ?>public/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="<?= getBase() ?>public/css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
+        <link href="<?= getBase() ?>public/css/bootstrap-calendar.css" rel="stylesheet"/>
         <link href="<?= getBase() ?>public/css/sb-admin.css" rel="stylesheet"/>
         <link href="<?= getBase() ?>public/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?= getBase() ?>public/summernote/summernote.css" rel="stylesheet"/>
@@ -69,13 +70,13 @@
                                 Gruppen
                             </a>
                         </li>
-                        <li>
+<!--                         <li>
                             <a href="<?= getBase() ?>archive">
                                 <i class="fa fa-fw fa-archive">
                                 </i>
                                 Archiv
                             </a>
-                        </li>
+                        </li> -->
                         <li>
                             <a href="<?= getBase() ?>messages">
                                 <i class="fa fa-fw fa-envelope">
@@ -139,6 +140,8 @@
         <script src="<?= getBase() ?>public/js/bootstrap.min.js">
         </script>
         <script src="<?= getBase() ?>public/js/bootstrap-datetimepicker.min.js">
+        </script>
+        <script src="<?= getBase() ?>public/js/bootstrap-calendar.js">
         </script>
         <script src="<?= getBase() ?>public/js/bootstrap-typeahead.js">
         </script>

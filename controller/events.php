@@ -3,13 +3,12 @@
 $this->respond('GET', '/?', function ($request, $response, $service) {
     checkLogin();
 
-    // $service->events = R::findAll('event',' archived IS NOT 1 ORDER BY date');
-
     $q = "SELECT
             e.name,
             e.id,
             e.location,
             e.date,
+            strftime('%s',date, 'unixepoch','+' || ifnull(days,2) || ' days','-1 day') as end,
             e.status,
             e.girls_min,
             e.girls_max,
@@ -29,14 +28,41 @@ $this->respond('GET', '/?', function ($request, $response, $service) {
                 WHERE response.event_id = e.id
                 AND player.sex = 'm'
                 AND response.status_id = 1) as boys
-            FROM event as e WHERE archived IS NOT 1";
+            FROM event as e WHERE archived IS NOT 1
+            ORDER by date";
 
     $service->events = R::getAll($q);
     $service->render('views/events.phtml');
 
 });
 
-$this->respond('POST', '/?', function ($request, $response, $service, $app) {
+$this->respond('GET', '/new/?', function ($request, $response, $service, $app) {
+
+    checkLogin();
+
+    $service->title = "Neuer Termin";
+
+    $service->event = (object) array(
+        'name'  => '',
+        'location'  => '',
+        'description'  => '',
+        'date'  => time(),
+        'days'  => 2,
+        'teamfee' => 0,
+        'playersfee' => 0,
+        'boys_min' => 0,
+        'boys_max' => 99,
+        'girls_min' => 0,
+        'girls_max' => 99,
+        'status' => 'optional'
+
+    );
+
+    $service->render('./views/event_edit.phtml');
+
+});
+
+$this->respond('POST', '/new/?', function ($request, $response, $service, $app) {
 
     checkLogin();
 
@@ -52,9 +78,9 @@ $this->respond('POST', '/?', function ($request, $response, $service, $app) {
         $event[$key] = $val;
     }
 
-    R::store($event);
+    $id = R::store($event);
 
-    $service->back();
+    $response->redirect(getBase().'events/'.$id);
 
 });
 
@@ -134,6 +160,7 @@ $this->respond('GET', '/[i:id]/edit/?', function ($request, $response, $service)
     $event = R::load('event', $id);
 
     $service->event = $event;
+    $service->title = "Termin bearbeiten";
 
     $service->render('./views/event_edit.phtml');
 });
@@ -277,4 +304,41 @@ $this->respond('POST', '/[:id]/addPlayer/?', function ($request, $response, $ser
     R::exec($q);
 
     $service->back();
+});
+
+$this->respond('/calendar.ics/?', function ($request, $response, $service) {
+
+    $vCalendar = new \Eluceo\iCal\Component\Calendar(getBase()."events/calendar.ics");
+
+    $events = R::getAll('SELECT * FROM event WHERE archived IS NOT 1 AND date > strftime("%s","now") ORDER by date');
+
+    foreach ($events as $event) {
+        $vEvent = new \Eluceo\iCal\Component\Event();
+        
+        $startDT = new DateTime();
+        $startDT->setTimestamp($event['date']);
+
+        $days = $event['days'] ? $event['days'] : 2;
+
+        $endDT = new DateTime();
+        $endDT->setTimestamp($event['date']);
+        $endDT->modify('-1 day');
+        $endDT->modify('+' . $days . ' day');
+
+        $vEvent
+        ->setDtStart($startDT)
+        ->setDtEnd($endDT)
+        ->setNoTime(true)
+        ->setSummary($event['name'])
+        ->setLocation($event['location']);
+
+        $vCalendar->addComponent($vEvent);
+
+    }
+
+    header('Content-Type: text/calendar; charset=utf-8');
+    header('Content-Disposition: attachment; filename="cal.ics"');
+
+    echo $vCalendar->render();
+
 });

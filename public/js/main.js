@@ -1,6 +1,5 @@
 (function() {
-    var getUrl = window.location;
-    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
+
     $('.bootstrapdatepicker').datetimepicker({
         initialDate: new Date(),
         startDate: new Date(),
@@ -91,5 +90,59 @@
             this.$select.parent().find("input[type='text'].multiselect-search").focus();
         }
     });
+
+
+
+    $('#eventcalendar').calendar({
+        language : 'de',
+        dataSource : function(){
+            
+            var el = $('tr.eventdata');
+
+            return $.map(el,function(o,i){
+                o = $(o);
+                return {
+                    id : o.data('id'),
+                    name : o.data('title'),
+                    location : o.data('location'),
+                    startDate: new Date(o.data('start')),
+                    endDate: new Date(o.data('end'))
+                }
+            });
+        }(),
+        mouseOnDay: function(e) {
+            if(e.events.length > 0) {
+                var content = '';
+                
+                for(var i in e.events) {
+                    content += '<div class="event-tooltip-content">'
+                                    + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                                    + '<div class="event-location">' + e.events[i].location + '</div>'
+                                + '</div>';
+                }
+            
+                $(e.element).popover({ 
+                    trigger: 'manual',
+                    container: 'body',
+                    html:true,
+                    content: content
+                });
+                
+                $(e.element).popover('show');
+            }
+        },
+        mouseOutDay: function(e) {
+            if(e.events.length > 0) {
+                $(e.element).popover('hide');
+            }
+        },
+        clickDay : function(e){
+
+            if(e.events.length>0){
+                    window.location = jsbase + 'event/' + e.events[0].id
+            }
+
+        }
+    })
     
 })();

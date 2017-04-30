@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Termin bearbeiten</h4>
+        <h4 class="modal-title" id="myModalLabel"><?= $this->title ?></h4>
       </div>
       <div class="modal-body">
 	      
@@ -28,6 +28,11 @@
 	  		  	<span class="add-on"><i class="icon-th"></i></span>
 			  </div>
   		  </div>
+
+        <div class="form-group">
+          <label for="date">Spieltage</label>
+           <input class="form-control" type="number" name="days" value="<?= $this->event->days ?>">
+        </div>
   		  
   		  <div class="form-group">
 	  		  <label>Teamfee</label>
