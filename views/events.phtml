@@ -8,24 +8,7 @@
 </div>
 
 <div class="panel-group" id="accordion">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#abo"><i class="fa fa-fw fa-rss"></i> Abonnieren</a>
-      </h4>
-    </div>
-    <div id="abo" class="panel-collapse collapse">
-      <p>Unter folgendem Link kannst Du die geplanten Termine herunterladen und/oder abonnieren:</p>
-      <a class="list-group-item" href="<?= getBase() ?>events/calendar.ics"><?= getBase() ?>events/calendar.ics</a>
-      <h5> Anleitungen zum abonnieren von Kalendern</h5>
-      <div class="btn-group">
-        <a href="https://support.apple.com/de-de/HT202361" class="btn btn-sm btn-primary" target="_blank">Mac OSX</a>
-        <a href="https://support.google.com/calendar/answer/37118?hl=de" class="btn btn-sm btn-primary" target="_blank">Google</a>
-        <a href="http://www.ff-altenschwand.de/seiten/service/ical/android.html" class="btn btn-sm btn-primary" target="_blank">Android</a>
-        <a href="https://support.apple.com/de-de/HT202361" class="btn btn-sm btn-primary" target="_blank">iOS</a>
-      </div>
-    </div>
-  </div>
+
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -36,6 +19,8 @@
       <div id="eventcalendar"></div>
     </div>
   </div>
+
+
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -71,5 +56,25 @@
     </tbody>
   </table>
     </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#abo"><i class="fa fa-fw fa-rss"></i> Abonnieren</a>
+      </h4>
+    </div>
+    <div id="abo" class="panel-collapse collapse">
+      <p>Unter folgendem Link kannst Du die geplanten Termine herunterladen und/oder abonnieren:</p>
+      <a class="list-group-item" href="<?= getBase() ?>events/calendar.ics"><?= getBase() ?>events/calendar.ics</a>
+      <h5> Anleitungen zum abonnieren von Kalendern</h5>
+      <div class="btn-group">
+        <a href="https://support.apple.com/de-de/HT202361" class="btn btn-sm btn-primary" target="_blank">Mac OSX</a>
+        <a href="https://support.google.com/calendar/answer/37118?hl=de" class="btn btn-sm btn-primary" target="_blank">Google</a>
+        <a href="http://www.ff-altenschwand.de/seiten/service/ical/android.html" class="btn btn-sm btn-primary" target="_blank">Android</a>
+        <a href="https://support.apple.com/de-de/HT202361" class="btn btn-sm btn-primary" target="_blank">iOS</a>
+      </div>
+    </div>
+  </div>
+
   </div>
 </div>
