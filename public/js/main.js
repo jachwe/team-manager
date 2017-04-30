@@ -78,6 +78,7 @@
             this.$select.parent().find("input[type='text'].multiselect-search").focus();
         }
     });
+
     $('#messagesender').multiselect({
         enableFiltering: true,
         maxHeight: 400,
@@ -90,4 +91,5 @@
             this.$select.parent().find("input[type='text'].multiselect-search").focus();
         }
     });
+    
 })();
