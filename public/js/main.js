@@ -51,7 +51,7 @@
         maxHeight: 400,
         buttonWidth: '100%',
         selectAllText: 'Alle auswählen',
-        filterPlaceholder: 'Suche..',
+        filterPlaceholder: 'Suche...',
         enableCaseInsensitiveFiltering: true,
         checkboxName: function(option) {
             return 'playerid[]';
@@ -91,5 +91,5 @@
             this.$select.parent().find("input[type='text'].multiselect-search").focus();
         }
     });
-
+    
 })();
