@@ -120,12 +120,13 @@ function imap_setup($inbox = false){
     $password   = $conf->password;
     $encryption = $conf->security;
 
+    $inbox = $conf->inbox;
     $archiveFolder = $conf->archiveFolder;
 
 
     $connection = "{".$mailbox."/imap/".$encryption."/novalidate-cert}";
 
-    $imap = @imap_open($connection, $username , $password);
+    $imap = @imap_open($connection.$inbox, $username , $password);
     @imap_createmailbox($imap, imap_utf7_encode("{".$mailbox."}".$archiveFolder));
 
     imap_errors();

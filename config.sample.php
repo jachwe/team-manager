@@ -41,7 +41,9 @@ return (object) array(
 	    
 	    
 	    'prefix'		=>	"[YOUR TEAM]", // will be prepended to all mailing list subjects
-	    'archiveFolder' =>	"MailingListArchive", // is the IMAP folder where processed mails are stored
+
+	    'inbox' =>	"INBOX",
+	    'archiveFolder' =>	"INBOX.MailingListArchive", // is the IMAP folder where processed mails are stored
 	    
 	    'trap'			=> true,	// if true, the reply-to address is in every mail is the address of the mailing list
 	    'public'		=> false    // if true, everyone can send mails to the list. Otherwise only players can send.
