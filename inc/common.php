@@ -110,3 +110,87 @@ function status2class($status)
             return "default";
     }
 }
+
+function imap_setup($inbox = false){
+
+    $conf = getConfig("mail");
+
+    $mailbox    = gethostbyname($conf->host);
+    $username   = $conf->user;
+    $password   = $conf->password;
+    $encryption = $conf->security;
+
+    $archiveFolder = $conf->archiveFolder;
+
+
+    $connection = "{".$mailbox."/imap/".$encryption."/novalidate-cert}";
+
+    $imap = @imap_open($connection, $username , $password);
+    @imap_createmailbox($imap, imap_utf7_encode("{".$mailbox."}".$archiveFolder));
+
+    imap_errors();
+
+    if( !$inbox ){
+        $imap = @imap_open($connection.$archiveFolder, $username , $password);
+    }
+
+    $object = (object) array(
+        'handle' => $imap
+    );
+
+    $object->mailbox = $mailbox;
+    $object->archiveFolder = $archiveFolder;
+
+    return $object;
+}
+
+function imap_getpart($mbox,$mid,$p,$partno,&$htmlmsg,&$plainmsg,&$charset,&$attachments) {
+
+    $data = ($partno)? imap_fetchbody($mbox,$mid,$partno): imap_body($mbox,$mid);
+
+    if ($p->encoding==4){
+        $data = quoted_printable_decode($data);
+    } elseif ($p->encoding==3) {
+        $data = base64_decode($data);
+    }
+
+    $params = array();
+    if (isset($p->parameters)){
+        foreach ($p->parameters as $x){
+            $params[strtolower($x->attribute)] = $x->value;
+        }
+    }
+    if (isset($p->dparameters)){
+        foreach ($p->dparameters as $x){
+            $params[strtolower($x->attribute)] = $x->value;
+        }
+    }
+
+    if (isset($params['filename']) || isset($params['name'])) {
+
+        $filename = ($params['filename'])? $params['filename'] : $params['name'];
+        $attachments[$filename] = $data;
+    }
+
+    if ($p->type==0 && $data) {
+
+        if (strtolower($p->subtype)=='plain'){
+            $plainmsg .= trim($data) ."\n\n";
+        }  else{
+            $htmlmsg .= $data ."<br><br>";
+        }
+
+        $charset = $params['charset'];
+
+    } elseif ($p->type==2 && $data) {
+
+        $plainmsg .= $data."\n\n";
+
+    }
+
+    if (isset($p->parts)) {
+        foreach ($p->parts as $partno0=>$p2){
+            imap_getpart($mbox,$mid,$p2,$partno.'.'.($partno0+1),$htmlmsg,$plainmsg,$charset,$attachments);
+        }
+    }
+}

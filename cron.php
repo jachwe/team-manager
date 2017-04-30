@@ -7,69 +7,18 @@ $conf = include('config.php');
 include('inc/common.php');
 include('db/setup.php');
 
-
-$mailbox = gethostbyname($conf->mail->host);
-$username = $conf->mail->user;
-$password = $conf->mail->password;
-$encryption = $conf->mail->security;
-
-function getpart($mbox,$mid,$p,$partno,&$htmlmsg,&$plainmsg,&$charset,&$attachments) {
-
-	$data = ($partno)? imap_fetchbody($mbox,$mid,$partno): imap_body($mbox,$mid);
-
-	if ($p->encoding==4){
-		$data = quoted_printable_decode($data);
-	} elseif ($p->encoding==3) {
-		$data = base64_decode($data);
-	}
-
-	$params = array();
-	if ($p->parameters){
-		foreach ($p->parameters as $x){
-			$params[strtolower($x->attribute)] = $x->value;
-		}
-	}
-	if ($p->dparameters){
-		foreach ($p->dparameters as $x){
-			$params[strtolower($x->attribute)] = $x->value;
-		}
-	}
-
-	if ($params['filename'] || $params['name']) {
-
-		$filename = ($params['filename'])? $params['filename'] : $params['name'];
-		$attachments[$filename] = $data;
-	}
-
-	if ($p->type==0 && $data) {
-
-		if (strtolower($p->subtype)=='plain'){
-			$plainmsg .= trim($data) ."\n\n";
-		}  else{
-			$htmlmsg .= $data ."<br><br>";
-		}
-
-		$charset = $params['charset'];
-
-	} elseif ($p->type==2 && $data) {
-
-		$plainmsg .= $data."\n\n";
-
-	}
-
-	if ($p->parts) {
-		foreach ($p->parts as $partno0=>$p2){
-			getpart($mbox,$mid,$p2,$partno.'.'.($partno0+1),$htmlmsg,$plainmsg,$charset,$attachments);
-		}
-	}
+if($conf->dev){
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+} else {
+	error_reporting(0);
+	ini_set('display_errors', 0);
 }
 
-$connection = "{".$mailbox."/imap/".$encryption."/novalidate-cert}";
-
-$imap = @imap_open($connection, $username , $password);
+$_imap = imap_setup(true);
+$imap = $_imap->handle;
 
 $unseen = imap_search($imap, 'UNSEEN');
-
 
 if(!$unseen){
 	die('NO MESSAGES');
@@ -95,13 +44,13 @@ foreach($unseen as $message_id){
 		$htmlmsg = $plainmsg = $charset = '';
 		$attachments = array();
 
-		if( !$struct->parts ){         //simple message
+		if( !isset($struct->parts) || ! $struct->parts){         //simple message
 
-			getpart($imap,$message_id,$struct,0,$htmlmsg,$plainmsg,$charset,$attachments);
+			imap_getpart($imap,$message_id,$struct,0,$htmlmsg,$plainmsg,$charset,$attachments);
 		} else {              //multipart
 			foreach($struct->parts as $pid=>$part){
 
-				getpart($imap,$message_id,$part,$pid+1,$htmlmsg,$plainmsg,$charset,$attachments);
+				imap_getpart($imap,$message_id,$part,$pid+1,$htmlmsg,$plainmsg,$charset,$attachments);
 			}
 		}
 
@@ -186,10 +135,13 @@ foreach($unseen as $message_id){
 }
 
 try{
-	imap_mail_move($imap, implode(',', $mids) , 'INBOX.'.$conf->mail->archiveFolder);
+	imap_mail_move($imap, implode(',', $mids) , $_imap->archiveFolder);
 	imap_expunge($imap);
 } catch(Exception $e){
 	var_dump($e);
 }
+
+
+imap_close($imap);
 
 die('OK');

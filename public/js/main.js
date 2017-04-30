@@ -33,6 +33,9 @@
     new List('eventlist', {
         valueNames: ['name', 'location', 'date', 'status', 'count']
     })
+    new List('messagelist', {
+        valueNames: ['subject','sender','date']
+    })
     $('[data-toggle="popover"]').popover();
     $('#summernote').summernote({
         height: 520,
