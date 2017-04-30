@@ -137,7 +137,10 @@
     			<h3 class="panel-title"><i class="fa fa-fw fa-info"></i> Informationen</h3>
     		</div>
     		<div class="panel-body">
-    			<div class="preformatted"><?= $this->event->description ?></div>
+          <h5>Datum</h5>
+          <p><?= $this->start ?> - <?= $this->end ?> (<?= $this->days ?> Tage)</p>
+          <h5>Beschreibung</h5>
+    			<div class="preformatted"><?= $this->event->description ?><?= empty($this->event->description) ? "<i>Keine Beschreibung</i>" : "" ?></div>
     		</div>
     	</div>
 

@@ -43,18 +43,18 @@ $this->respond('GET', '/new/?', function ($request, $response, $service, $app) {
     $service->title = "Neuer Termin";
 
     $service->event = (object) array(
-        'name'  => '',
-        'location'  => '',
-        'description'  => '',
-        'date'  => time(),
-        'days'  => 2,
-        'teamfee' => 0,
-        'playersfee' => 0,
-        'boys_min' => 0,
-        'boys_max' => 99,
-        'girls_min' => 0,
-        'girls_max' => 99,
-        'status' => 'optional'
+        'name'        => '',
+        'location'    => '',
+        'description' => '',
+        'date'        => time(),
+        'days'        => 2,
+        'teamfee'     => 0,
+        'playersfee'  => 0,
+        'boys_min'    => 0,
+        'boys_max'    => 99,
+        'girls_min'   => 0,
+        'girls_max'   => 99,
+        'status'      => 'optional',
 
     );
 
@@ -80,7 +80,7 @@ $this->respond('POST', '/new/?', function ($request, $response, $service, $app) 
 
     $id = R::store($event);
 
-    $response->redirect(getBase().'events/'.$id);
+    $response->redirect(getBase() . 'events/' . $id);
 
 });
 
@@ -92,6 +92,11 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
     $event = R::load('event', $id);
 
     $service->event = $event;
+
+    $service->start = date('d.m.Y', $event->date);
+    $service->days  = isset($event->days) ? $event->days : 2;
+    $endts = strtotime('+' . ($service->days - 1) . ' days', $event->date);
+    $service->end   = date('d.m.Y', $endts);
 
     $q = "SELECT player.name as name, player.id as id , response.time as time
                 FROM player
@@ -214,7 +219,7 @@ $this->respond('POST', '/[i:id]/notify/?', function ($request, $response, $servi
     $event = R::load('event', $id);
 
     $sender = R::load('player', $request->param('senderid'));
-    $conf = getConfig('mail');
+    $conf   = getConfig('mail');
 
     $mail = createMailer();
 
@@ -308,13 +313,13 @@ $this->respond('POST', '/[:id]/addPlayer/?', function ($request, $response, $ser
 
 $this->respond('/calendar.ics/?', function ($request, $response, $service) {
 
-    $vCalendar = new \Eluceo\iCal\Component\Calendar(getBase()."events/calendar.ics");
+    $vCalendar = new \Eluceo\iCal\Component\Calendar(getBase() . "events/calendar.ics");
 
     $events = R::getAll('SELECT * FROM event WHERE archived IS NOT 1 AND date > strftime("%s","now") ORDER by date');
 
     foreach ($events as $event) {
         $vEvent = new \Eluceo\iCal\Component\Event();
-        
+
         $startDT = new DateTime();
         $startDT->setTimestamp($event['date']);
 
@@ -326,11 +331,11 @@ $this->respond('/calendar.ics/?', function ($request, $response, $service) {
         $endDT->modify('+' . $days . ' day');
 
         $vEvent
-        ->setDtStart($startDT)
-        ->setDtEnd($endDT)
-        ->setNoTime(true)
-        ->setSummary($event['name'])
-        ->setLocation($event['location']);
+            ->setDtStart($startDT)
+            ->setDtEnd($endDT)
+            ->setNoTime(true)
+            ->setSummary($event['name'])
+            ->setLocation($event['location']);
 
         $vCalendar->addComponent($vEvent);
 
