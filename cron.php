@@ -18,10 +18,10 @@ if($conf->dev){
 $_imap = imap_setup(true);
 $imap = $_imap->handle;
 
-$unseen = imap_search($imap, 'UNSEEN');
+$unseen = imap_search($imap, 'ALL UNDELETED');
 
 if(!$unseen){
-	die('NO MESSAGES');
+	die(date("d.m.Y H:i",time()) . ' -> NO MESSAGES');
 }
 
 $receiver = R::getAll('SELECT name, mail FROM player WHERE receive_mail = 1 AND mail IS NOT NULL');
@@ -102,7 +102,15 @@ foreach($unseen as $message_id){
 
 				}
 
-				$result = $mail->send();
+				$sent = $mail->send();
+				echo '<br/>' .$header->date . ' ' . $subject . ' ' . $fromName . ' ' . $fromMail;
+				if( !$sent ){
+					echo "<br/>>>>>>>>>>>>>>> ERROR";
+					echo "<br/>>>>>>>>>>>>>>>" . $mail->ErrorInfo;
+
+				} else{
+					echo "<br/>>>>>>>>>>>>>>> OK";
+				}
 
 			} catch(Exception $e2){
 				var_dump($e2);
@@ -111,19 +119,7 @@ foreach($unseen as $message_id){
 
 		} elseif( !$isAllowed ){
 
-			$mail = createMailer();
-
-			$mail->addAddress($fromMail,$fromName);
-
-			$msg = "Hallo " . $fromName . ",\n\ndeine Mail an den Verteiler\"". $conf->appname ."\" konnte leider nicht verschickt werden, da Du kein Mitglied dieser Liste bist.\nBitte melde dich zuerst an, oder bitte ein Mitglied der Liste die Mail für dich zu verschicken.\n\nViele Grüße!";
-
-			$mail->isHTML(true);
-			$mail->CharSet = $charset;
-			$mail->Subject = "Error: " . $header->subject;
-			$mail->Body    = nl2br($msg);
-			$mail->AltBody    = $msg;
-
-			$result = $mail->send();
+			echo '<br/>' . $fromName . '(' . $fromMail . ') not in List' ;
 		}
 
 		$mids[] = $message_id;
@@ -143,5 +139,4 @@ try{
 
 
 imap_close($imap);
-
-die('OK');
+?>

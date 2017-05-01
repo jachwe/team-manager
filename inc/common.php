@@ -126,13 +126,13 @@ function imap_setup($inbox = false){
 
     $connection = "{".$mailbox."/imap/".$encryption."/novalidate-cert}";
 
-    $imap = @imap_open($connection.$inbox, $username , $password);
-    @imap_createmailbox($imap, imap_utf7_encode("{".$mailbox."}".$archiveFolder));
-
+    $imap = imap_open($connection.$inbox, $username , $password);
+    
     imap_errors();
 
-    if( !$inbox ){
-        $imap = @imap_open($connection.$archiveFolder, $username , $password);
+    if( $inbox === false ){
+        imap_createmailbox($imap, imap_utf7_encode("{".$mailbox."}".$archiveFolder));
+        $imap = imap_open($connection.$archiveFolder, $username , $password);
     }
 
     $object = (object) array(
