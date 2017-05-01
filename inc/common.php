@@ -111,7 +111,7 @@ function status2class($status)
     }
 }
 
-function imap_setup($inbox = false){
+function imap_setup($returnInbox = false){
 
     $conf = getConfig("mail");
 
@@ -126,23 +126,24 @@ function imap_setup($inbox = false){
 
     $connection = "{".$mailbox."/imap/".$encryption."/novalidate-cert}";
 
+    $conn = $connection.$inbox;
     $imap = imap_open($connection.$inbox, $username , $password);
     
     imap_errors();
 
-    if( $inbox === false ){
+    if( $returnInbox === false ){
+        $conn = $connection.$archiveFolder;
         imap_createmailbox($imap, imap_utf7_encode("{".$mailbox."}".$archiveFolder));
+        imap_errors();
         $imap = imap_open($connection.$archiveFolder, $username , $password);
     }
 
-    $object = (object) array(
-        'handle' => $imap
+    return (object) array(
+        'handle' => $imap,
+        'mailbox'=> $mailbox,
+        'archiveFolder'=> $archiveFolder,
+        'connection' => $conn
     );
-
-    $object->mailbox = $mailbox;
-    $object->archiveFolder = $archiveFolder;
-
-    return $object;
 }
 
 function imap_getpart($mbox,$mid,$p,$partno,&$htmlmsg,&$plainmsg,&$charset,&$attachments) {

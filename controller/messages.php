@@ -6,15 +6,18 @@ $this->respond('GET', '/?', function ($request, $response, $service) {
 
     $service->players = R::getAll('SELECT name,id,mail FROM player ORDER BY name');
 
-    $imap = imap_setup();
+    $imap = imap_setup(false);
 
-    $status = @imap_status($imap->handle, "{" . $imap->mailbox . "}" . $imap->archiveFolder, SA_ALL);
+    $MC = imap_check($imap->handle);
 
-    $result = imap_fetch_overview($imap->handle, "1:{$status->messages}", 0);
+    $status = imap_search($imap->handle, 'ALL UNDELETED');
 
-    // $result = array_reverse($result);
+    $mails = array();
 
-    $service->mails = $result;
+    foreach($status as $mid) {
+        $mails[] = imap_fetch_overview($imap->handle, $mid, 0)[0];
+    }
+    $service->mails = $mails;
 
     $service->render('./views/messages.phtml');
 });
@@ -25,9 +28,7 @@ $this->respond('GET', '/[:uid]/?', function ($request, $response, $service) {
 
     $message_id = $request->uid;
 
-    $imap = imap_setup();
-
-    $status = @imap_status($imap->handle, "{" . $imap->mailbox . "}" . $imap->archiveFolder, SA_ALL);
+    $imap = imap_setup(false);
 
     $header = imap_header($imap->handle, $message_id);
     $struct = imap_fetchstructure($imap->handle, $message_id);

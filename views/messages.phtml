@@ -29,10 +29,10 @@
 			</tr>
 		</thead>
 		<tbody class="list">
-			<?php  foreach($this->mails as $i=>$mail): ?>
+			<?php  foreach($this->mails as $mail): ?>
 			<tr>
 				<td class="text-left">
-					<a class="subject" href="<?= getBase() ?>message/<?= ($i+1) ?>"><?= $mail->subject ?></a>
+					<a class="subject" href="<?= getBase() ?>message/<?= $mail->msgno ?>"><?= $mail->subject ?></a>
 				</td>
 				<td>
 					<span class="sender"><?= $mail->from ?></span>
