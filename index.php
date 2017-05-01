@@ -21,6 +21,8 @@ if($conf->dev){
 	ini_set('display_errors', 0);
 }
 
+ini_set('session.gc_maxlifetime', PHP_INT_MAX);
+
 include('inc/common.php');
 include('db/setup.php');
 
