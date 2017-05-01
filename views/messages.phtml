@@ -1,10 +1,10 @@
 <div class='page-header'>
   <div class='btn-toolbar pull-right'>
     <div class='btn-group'>
-    	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newMessageModal"> Neue Nachricht </button>
+    	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMessageModal"><i class="fa fa-fw fa-envelope"></i> Neue Nachricht </button>
     </div>
   </div>
-  <h1>Nachrichten <small>Verteiler</small></h1>
+  <h1>Nachrichten</h1>
 </div>
 
 <p>Mails an <a href="mailto:<?= getConfig('mail')->address ?>"><?= getConfig('mail')->address ?></a> werden an alle Abonnenten weitergeleitet, sofern der Absender selbst auf dem Verteiler ist. </p>

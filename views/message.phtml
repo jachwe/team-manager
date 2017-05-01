@@ -7,11 +7,9 @@
   <h1>Nachricht</h1>
 </div>
 
-
-
 <div class="container-fluid">
 	<div class="panel panel-default">
-	<div class="panel-heading"> Nachricht von <?= $this->fromName ?> </div>
+	<div class="panel-heading"> Absender <?= $this->fromName ?><span class="pull-right text-right"><?= $this->header->date ?></span> </div>
 	<div class="panel-body">
 		<?= $this->html ?>
 	</div>
