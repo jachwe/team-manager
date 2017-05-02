@@ -7,7 +7,6 @@ $this->respond('GET', '/?', function ($request, $response, $service, $app) {
     $q = "SELECT *,(SELECT count(player.id) FROM player JOIN player_tag ON player_tag.player_id = player.id WHERE player_tag.tag_id = tag.id) as members FROM tag";
 
     $service->groups  = R::getAll($q);
-    $service->players = R::findAll('player');
 
     $service->render('./views/groups.phtml');
 
@@ -36,7 +35,6 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
     $service->tag   = $tag;
     $service->tagid = $id;
 
-    $service->allplayers = R::findAll('player', ' ORDER BY name');
 
     $service->players = R::getAll('SELECT name,player.id FROM player JOIN player_tag ON player_tag.player_id = player.id WHERE player_tag.tag_id = ' . $id . ' ORDER BY name');
 
@@ -66,6 +64,8 @@ $this->respond('POST', '/[i:id]/message/?', function ($request, $response, $serv
     $players = R::tagged('player', $tag);
 
     $sender = R::load('player', $request->param('senderid'));
+    keepUser($sender->id);
+
     $conf   = getConfig('mail');
 
     $mail = createMailer();

@@ -54,15 +54,71 @@ function createMailer()
     return $mail;
 }
 
+function getPlayerSingleOptions($preselect = true){
+    return getPlayerListOptions($preselect,false);
+}
+
+function getPlayerListOptions($preselect = true, $multi = false){
+    $players = R::findAll('player',' ORDER BY name');
+    $rstr = "";
+    foreach ($players as $player) {
+        $cu = $multi ? getCurrentPlayers() : getCurrentPlayer();
+        $pid = $player->id;
+        $name = $player->name;
+
+        $selected = $preselect;
+        if( $selected && $multi ){
+            $selected = in_array($pid, $cu);
+        } else if( $selected && !$multi ){
+            $selected = $pid == $cu;
+        }
+        
+        if($selected){
+            $rstr .= "<option value='$pid' selected>$name</option>";
+        } else {
+            $rstr .= "<option value='$pid'>$name</option>";
+        }
+    }
+    return $rstr;
+}
+
+function getCurrentPlayer(){
+    return isset($_COOKIE['tmsid']) ? $_COOKIE['tmsid'] : -1;
+}
+
+function getCurrentPlayers(){
+    return isset($_COOKIE['tmmids']) ? explode(',',$_COOKIE['tmmids']) : array();
+}
+
+function keepUser($uid){
+    setcookie('tmsid', $uid, time() + (10 * 365 * 24 * 60 * 60), "/");
+    $_SESSION['tmsid'] = $uid;
+}
+
+function keepUsers($uids){
+    setcookie('tmmids', implode(",",$uids), time() + (10 * 365 * 24 * 60 * 60), "/");
+    $_SESSION['tmmids'] = $uids;
+}
+
 function isPrivate()
 {
     global $conf;
     return isset($conf->password) && !empty($conf->password);
 }
 
+function doLogin(){
+    setcookie('tmli', true, time() + (10 * 365 * 24 * 60 * 60), "/");
+    $_SESSION['loggedin'] = true;
+}
+
+function doLogout(){
+    setcookie('tmli', false, time() - 3600);
+    unset($_SESSION['loggedin']);
+}
+
 function isLoggedIn()
 {
-    return isset($_SESSION['loggedin']);
+    return isset($_SESSION['loggedin']) || isset($_COOKIE['tmli']);
 }
 
 function checkPass($pass)

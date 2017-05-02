@@ -21,7 +21,7 @@ $klein->respond(array('POST','GET'),'/login/?', function ($request, $response, $
 	if( $request->method('post') ){
 		$valid = checkPass($request->param('password'));
 		if( $valid ){
-			$_SESSION['loggedin'] = true;
+			doLogin();
 			$response->redirect(getBase());
 		}
 	} else if($request->method('get')){
@@ -31,7 +31,7 @@ $klein->respond(array('POST','GET'),'/login/?', function ($request, $response, $
 
 $klein->respond(array('POST','GET'),'/logout/?', function ($request, $response, $service) {
 	
-	unset($_SESSION['loggedin']);
+	doLogout();
 	$response->redirect(getBase());
 });
 

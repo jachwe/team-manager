@@ -4,8 +4,6 @@ $this->respond('GET', '/?', function ($request, $response, $service) {
 
     checkLogin();
 
-    $service->players = R::getAll('SELECT name,id,mail FROM player ORDER BY name');
-
     $imap = imap_setup(false);
 
     $MC = imap_check($imap->handle);
@@ -61,6 +59,8 @@ $this->respond('POST', '/?', function ($request, $response, $service) {
 
     $players = R::loadAll('player', $request->param('playerid'));
     $sender  = R::load('player', $request->param('senderid'));
+
+    keepUser($sender->id);
 
     $mail = createMailer();
 

@@ -119,8 +119,6 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
 
     $service->costpp = $service->playercount > 0 ? (intval($event->teamfee) / min($service->maxplayers, $service->playercount)) + $event->playersfee . "€" : "-";
 
-    $service->allplayers = R::findAll('player', ' ORDER BY name');
-
     $service->girls_status = "default";
     if (count($service->positive_w) < $event->girls_min) {
         $service->girls_status = "danger";
@@ -219,6 +217,8 @@ $this->respond('POST', '/[i:id]/notify/?', function ($request, $response, $servi
     $event = R::load('event', $id);
 
     $sender = R::load('player', $request->param('senderid'));
+    keepUser($sender->id);
+
     $conf   = getConfig('mail');
 
     $mail = createMailer();
@@ -229,8 +229,6 @@ $this->respond('POST', '/[i:id]/notify/?', function ($request, $response, $servi
     $message = $request->param('message');
 
     $players = R::getAll('SELECT player.name as name, player.mail as mail FROM player JOIN response ON response.player_id = player.id WHERE response.event_id = "' . $id . '" AND response.status_id = "1"');
-
-    $service->allplayers = R::findAll('player', ' ORDER BY name');
 
     foreach ($players as $player) {
         if (!empty($player['mail'])) {
@@ -289,6 +287,8 @@ $this->respond('POST', '/[:id]/addPlayer/?', function ($request, $response, $ser
     $event = R::load('event', $id);
 
     $pids = $request->param('playerid');
+
+    keepUsers($pids);
 
     $status = $request->param('status');
     $enum   = R::enum('status:' . $status);

@@ -57,7 +57,6 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
     $player = R::load('player', $id);
 
     $service->player  = $player;
-    $service->allplayers = R::findAll('player', ' ORDER BY name');
 
     $service->events  = R::getAll('SELECT event.id as id, event.name as name, response.status_id as status FROM event JOIN response ON response.event_id = event.id WHERE response.player_id = ' . $player->id);
     $service->balance = R::getCell('SELECT sum(value) as balance FROM payment WHERE player_id = ' . $player->id);
@@ -121,6 +120,9 @@ $this->respond('POST', '/[i:id]/message/?', function ($request, $response, $serv
     $player = R::load('player', $id);
     
     $sender = R::load('player', $request->param('senderid'));
+
+    keepUser($sender->id);
+
     $conf = getConfig('mail');
 
     $mail = createMailer();

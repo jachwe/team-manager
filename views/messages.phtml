@@ -67,9 +67,7 @@
 			<div class="panel-body">
 				<select id="messagesender" required="" name="senderid">
 				<option value="">Absender wählen</option>
-				<?php foreach($this->players as $player): ?>
-					<option value="<?= $player['id'] ?>"<?= $player['mail'] ? "" : " disabled"?>><?= $player['name'] ?></option>
-				<?php endforeach; ?>
+				<?= getPlayerSingleOptions(true) ?>
 				</select>
 			</div>
 		</div>
@@ -77,9 +75,7 @@
 			<div class="panel-heading"> Empfänger*Innen </div>
 			<div class="panel-body">
 				<select id="messagereceiver" multiple="multiple">
-				<?php foreach($this->players as $player): ?>
-					<option value="<?= $player['id'] ?>"<?= $player['mail'] ? "" : " disabled"?>><?= $player['name'] ?></option>
-				<?php endforeach; ?>
+				<?= getPlayerListOptions(false,true) ?>
 				</select>
 			</div>
 		</div>
