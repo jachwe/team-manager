@@ -105,7 +105,7 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
                 WHERE response.event_id = :event
                 AND response.status_id = 1
                 AND player.sex = :sex
-                ORDER BY time";
+                ORDER BY response.spotorder";
 
     $service->positive_m = R::getAll($q, array(':event' => $event->id, ':sex' => 'm'));
     $service->positive_w = R::getAll($q, array(':event' => $event->id, ':sex' => 'w'));
@@ -309,6 +309,36 @@ $this->respond('POST', '/[:id]/addPlayer/?', function ($request, $response, $ser
     R::exec($q);
 
     $service->back();
+});
+
+$this->respond('POST', '/[:id]/order?', function ($request, $response, $service) {
+
+    // checkLogin();
+    // R::fancyDebug( TRUE );
+    $id    = $request->id;
+    $event = R::load('event', $id);
+
+    $pids = $request->param('playerid');
+
+    foreach ($pids as $order => $pid) {   
+
+        $r = R::findOne('response',' event_id = :eid AND player_id = :pid', array(
+            ":eid"  => $id,
+            ":pid" => $pid
+        ));
+        
+        if($r){
+            $r->spotorder = $order;
+            $r->lastupdate = time();
+            R::store($r);
+        }
+    }
+
+    $response->json($pids);
+
+
+
+
 });
 
 $this->respond('/calendar.ics/?', function ($request, $response, $service) {

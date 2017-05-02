@@ -1,5 +1,4 @@
 (function() {
-
     $('.bootstrapdatepicker').datetimepicker({
         initialDate: new Date(),
         startDate: new Date(),
@@ -34,7 +33,7 @@
         valueNames: ['name', 'location', 'date', 'status', 'count']
     })
     new List('messagelist', {
-        valueNames: ['subject','sender','date']
+        valueNames: ['subject', 'sender', 'date']
     })
     $('[data-toggle="popover"]').popover();
     $('#summernote').summernote({
@@ -80,7 +79,6 @@
             this.$select.parent().find("input[type='text'].multiselect-search").focus();
         }
     });
-
     $('#messagesender').multiselect({
         enableFiltering: true,
         maxHeight: 400,
@@ -94,58 +92,75 @@
         }
     });
 
+    $(sortable('.sortable', {
+        placeholderClass: 'list-group-item fade',
+        items: ':not(.waitingline)'
+    })).on('sortupdate', function(e) {
+        e = e.originalEvent;
+        $container = $(e.detail.startparent);
+
+        $eid = $container.data("eventid");
+
+        $items = $container.children();
+        var playerids = [];
+        for (var i = 0; i < $items.length; i++) {
+            var pid = $items.eq(i).data('playerid');
+            if (pid) {
+                playerids.push(pid);
+            }
+        }
+        
+        $.ajax({
+           type: "POST",
+           data: {playerid:playerids},
+           url: jsbase + "event/" + $eid + "/order",
+           success: function(msg){
+            window.location.reload();
+           }
+        });
+
+    });
 
 
     $('#eventcalendar').calendar({
-        language : 'de',
-        dataSource : function(){
-            
+        language: 'de',
+        dataSource: function() {
             var el = $('tr.eventdata');
-
-            return $.map(el,function(o,i){
+            return $.map(el, function(o, i) {
                 o = $(o);
                 return {
-                    id : o.data('id'),
-                    name : o.data('title'),
-                    location : o.data('location'),
+                    id: o.data('id'),
+                    name: o.data('title'),
+                    location: o.data('location'),
                     startDate: new Date(o.data('start')),
                     endDate: new Date(o.data('end'))
                 }
             });
         }(),
         mouseOnDay: function(e) {
-            if(e.events.length > 0) {
+            if (e.events.length > 0) {
                 var content = '';
-                
-                for(var i in e.events) {
-                    content += '<div class="event-tooltip-content">'
-                                    + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
-                                    + '<div class="event-location">' + e.events[i].location + '</div>'
-                                + '</div>';
+                for (var i in e.events) {
+                    content += '<div class="event-tooltip-content">' + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>' + '<div class="event-location">' + e.events[i].location + '</div>' + '</div>';
                 }
-            
-                $(e.element).popover({ 
+                $(e.element).popover({
                     trigger: 'manual',
                     container: 'body',
-                    html:true,
+                    html: true,
                     content: content
                 });
-                
                 $(e.element).popover('show');
             }
         },
         mouseOutDay: function(e) {
-            if(e.events.length > 0) {
+            if (e.events.length > 0) {
                 $(e.element).popover('hide');
             }
         },
-        clickDay : function(e){
-
-            if(e.events.length>0){
-                    window.location = jsbase + 'event/' + e.events[0].id
+        clickDay: function(e) {
+            if (e.events.length > 0) {
+                window.location = jsbase + 'event/' + e.events[0].id
             }
-
         }
     })
-    
 })();

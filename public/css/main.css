@@ -56,6 +56,14 @@ iframe.gmap,.avatarframe img {
 	border-radius: 5px;
 }
 
+.waitingline{
+	font-weight: bold;
+}
+
+.waitingline ~ li{
+	background: #fcf8e3;
+}
+
 [class*="col-"] {
     margin-bottom: 15px;
 }
@@ -69,4 +77,20 @@ td.text span{
 
 #abo{
 	padding: 10px;
+}
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+li.placeholder{
+	list-style: none;
+	display: inline-block;
+	height: 10px;
 }

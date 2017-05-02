@@ -25,6 +25,7 @@ $minifier->add('public/js/bootstrap-datetimepicker.min.js');
 $minifier->add('public/js/bootstrap-calendar.js');
 $minifier->add('public/js/bootstrap-typeahead.js');
 $minifier->add('public/js/list.js');
+$minifier->add('public/js/sortable.js');
 $minifier->add('public/summernote/summernote.min.js');
 $minifier->add('public/summernote/lang/summernote-de-DE.js');
 
