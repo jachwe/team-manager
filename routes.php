@@ -22,8 +22,10 @@ $klein->respond(array('POST','GET'),'/login/?', function ($request, $response, $
 		$valid = checkPass($request->param('password'));
 		if( $valid ){
 			doLogin();
-			$response->redirect(getBase());
+		} else {
+			$service->flash('Das Passwort ist leider nicht korrekt','danger');
 		}
+		$response->redirect(getBase());
 	} else if($request->method('get')){
 		$service->partial('./views/login.phtml');
 	}
