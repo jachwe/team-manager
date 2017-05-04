@@ -94,3 +94,7 @@ li.placeholder{
 	display: inline-block;
 	height: 10px;
 }
+
+.btn.multiselect{
+	text-align: left;
+}

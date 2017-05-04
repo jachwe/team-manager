@@ -20,7 +20,7 @@ $this->respond('GET', '/?', function ($request, $response, $service) {
     $service->render('./views/messages.phtml');
 });
 
-$this->respond('GET', '/[:uid]/?', function ($request, $response, $service) {
+$this->respond('GET', '/[i:uid]/?', function ($request, $response, $service) {
 
     checkLogin();
 
@@ -88,4 +88,13 @@ $this->respond('POST', '/?', function ($request, $response, $service) {
     }
 
     $service->back();
+});
+
+$this->respond('GET', '/subscriber/?', function ($request, $response, $service) {
+
+    checkLogin();
+
+    $this->subscriber = R::findAll('subscriber');
+
+    $service->render('./views/subscriber.phtml');
 });

@@ -35,6 +35,7 @@
     new List('messagelist', {
         valueNames: ['subject', 'sender', 'date']
     })
+
     $('[data-toggle="popover"]').popover();
     $('#summernote').summernote({
         height: 520,
