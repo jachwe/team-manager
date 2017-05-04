@@ -15,6 +15,14 @@ $this->respond('GET', '/?', function ($request, $response, $service) {
     foreach($status as $mid) {
         $mails[] = imap_fetch_overview($imap->handle, $mid, 0)[0];
     }
+
+    function cmp($a, $b)
+    {   
+        return $a->date < $b->date ? -1 : 1;
+    }
+
+    usort($mails, "cmp");
+
     $service->mails = $mails;
 
     $service->render('./views/messages.phtml');
@@ -94,7 +102,30 @@ $this->respond('GET', '/subscriber/?', function ($request, $response, $service) 
 
     checkLogin();
 
-    $this->subscriber = R::findAll('subscriber');
+    $subs = R::findAll('subscriber');
+    if( !$subs){
+        $subs = array();
+    }
+
+    $service->subscriber = $subs;
 
     $service->render('./views/subscriber.phtml');
+});
+
+$this->respond('POST', '/subscriber/add?', function ($request, $response, $service) {
+
+    checkLogin();
+
+    $mails = $request->param('newmails');
+
+    $values = preg_split("/[\n\r\,]/", $mails, 0, PREG_SPLIT_NO_EMPTY);
+
+    foreach ($values as $value) {
+        $s = R::dispense('subscriber');
+        $s->mail = $value;
+        R::store($s);
+    }
+
+    $service->flash( count($values) . ' AbonnentIn(nen) wurden hinzugefügt','success');
+    $service->back();
 });

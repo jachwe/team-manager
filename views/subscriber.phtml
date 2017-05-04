@@ -1,99 +1,55 @@
-<div class='page-header'>
-  <div class='btn-toolbar pull-right'>
-    <div class='btn-group'>
-    	
+<div class="page-header">
+    <div class="btn-toolbar pull-right">
+        <div class="btn-group">
+        </div>
     </div>
-  </div>
-  <h1>Nachrichten <small>Abonnenten</small></h1>
-  <div class=''>
-    <div class=''>
-      <a class="btn btn-primary" href="<?= getBase() ?>messages/"> Archiv </a>
+    <h1>
+        Nachrichten <small>Abonnenten</small>
+    </h1>
+    <div class="">
+        <div class="">
+        	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newSubscriberModal"> AbonnentIn(nen) hinzufügen </button>
+            <a class="btn btn-primary" href="<?= getBase() ?>messages/">
+                Archiv
+            </a>
+        </div>
     </div>
-  </div>
 </div>
 
-<p>Mails an <a href="mailto:<?= getConfig('mail')->address ?>"><?= getConfig('mail')->address ?></a> werden an alle Abonnenten weitergeleitet, sofern der Absender selbst auf dem Verteiler ist. </p>
+<div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Empfänger*Innen
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    <?php foreach($this->subscriber as $subscriber): ?>
+                    <div class="list-group-item clearfix">
+                    	<div class="btn-group pull-right">
+                    		<button class="btn btn-default"><i class="fa fa-fw fa-edit"></i></button>
+                    	</div>
+                        <a href="mailto:<?= $subscriber->mail ?>"><?= $subscriber->mail ?></a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
 
-<div id="messagelist" class="table-responsive">
-		
-	<table class="table table-striped table-hover table-responsive">
-		<thead>
-			<tr>
-				<th colspan="3"><input class="search form-control" placeholder="Suchen..." /></th>
-			</tr>
-			<tr>
-				<th>
-					<a href="#" class="sort text-left" data-sort="subject">Betreff</a>
-				</th>
-				<th class="text-left">
-					<a href="#" class="sort" data-sort="sender">Absender</a>
-				</th>
-				<th width="150px" class="text-right">
-					<a href="#" class="sort" data-sort="date">Datum</a>
-				</th>
-			</tr>
-		</thead>
-		<tbody class="list">
-			<?php  foreach($this->mails as $mail): ?>
-			<tr>
-				<td class="text-left">
-					<a class="subject" href="<?= getBase() ?>message/<?= $mail->msgno ?>"><?= $mail->subject ?></a>
-				</td>
-				<td>
-					<span class="sender"><?= $mail->from ?></span>
-				</td>
-				<td class="text-right text">
-					<span class="date text-hide"><?= strtotime($mail->date) ?></span>
-					<span class="text-right"><?= date("d.m.Y H:i",strtotime($mail->date)) ?></span>
-				</td>
-			</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
-</div>
-
-<div class="modal fade" id="newMessageModal">
-  <form method="POST" id="messageform">
-  <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="newSubscriberModal">
+  <form action="<?=getBase()?>messages/subscriber/add" method="POST">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-      	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Nachricht verfassen</h4>
+        <h4 class="modal-title">AbonnentIn(nen) hinzufügen</h4>
       </div>
       <div class="modal-body">
-	      
-	      <div class="panel panel-default">
-			<div class="panel-heading"> Absender </div>
-			<div class="panel-body">
-				<select id="messagesender" required="" name="senderid">
-				<option value="">Absender wählen</option>
-				<?= getPlayerSingleOptions(true) ?>
-				</select>
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading"> Empfänger*Innen </div>
-			<div class="panel-body">
-				<select id="messagereceiver" multiple="multiple">
-				<?= getPlayerListOptions(false,true) ?>
-				</select>
-			</div>
-		</div>
-		<div class="panel panel-default">
-		<div class="panel-heading"> Nachricht </div>
-		<div class="panel-body">
-			<div class="row">
-				<div class="col-md-10">
-					<input type="text" class="form-control" name="subject" placeholder="Betreff"/>
-				</div>
-				<div class="col-md-2">
-					<button type="submit" class="btn btn-primary form-control">Senden</button>
-				</div>
-			</div>
-			
-		</div>
-		<textarea name="message" id="summernote" placeholder="Nachricht"></textarea>
-  		  
+      <p>Mehrere Adressen mit Komma trennen oder in neue Zeile schreiben.</p>
+	      <textarea class="form-control" name="newmails" rows="10"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+        <button type="submit" class="btn btn-primary">Speichern</button>
       </div>
     </div>
   </div>

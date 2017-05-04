@@ -25,6 +25,7 @@ if(!$unseen){
 }
 
 $receiver = R::getAll('SELECT name, mail FROM player WHERE receive_mail = 1 AND mail IS NOT NULL');
+$subs = R::getAll('SELECT * FROM subscriber');
 
 $mids = array();
 
@@ -38,6 +39,9 @@ foreach($unseen as $message_id){
 		$fromMail = $header->from[0]->mailbox . "@" . $header->from[0]->host;
 
 		$member = R::findOne( 'player', ' mail = ? ', array( $fromMail ) );
+		if( $member == NULL ){
+			$member = R::findOne( 'subscriber', ' mail = ? ', array( $fromMail ) );
+		}
 
 		$struct = imap_fetchstructure($imap,$message_id);
 
@@ -80,6 +84,12 @@ foreach($unseen as $message_id){
     			$mail->addAddress($fromMail,$fromName);
 
 				foreach($receiver as $p){
+					if($fromMail != $p['mail']){
+						$mail->addBCC($p['mail'], $p['name']);
+					}
+				}
+
+				foreach($subs as $p){
 					if($fromMail != $p['mail']){
 						$mail->addBCC($p['mail'], $p['name']);
 					}
