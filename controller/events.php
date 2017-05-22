@@ -226,7 +226,9 @@ $this->respond('POST', '/[i:id]/notify/?', function ($request, $response, $servi
     $mail->AddReplyTo($sender->mail, $sender->name);
     $mail->SetFrom($conf->address, $sender->name . " | " . $conf->name);
 
-    $message = $request->param('message');
+    $msg = $request->param('message');
+
+    $msg .= '<br/><br/><p>-------------</p><p>Diese Nachricht wurde verschickt von <a href="'.getBase().'player/'. $sender->id .'">'. $sender->name .'</a> an alle Teilnehmer*Innen von <a href="'.getBase().'event/'. $id .'">'. $event->name .'</a>.</p>';
 
     $players = R::getAll('SELECT player.name as name, player.mail as mail FROM player JOIN response ON response.player_id = player.id WHERE response.event_id = "' . $id . '" AND response.status_id = "1"');
 
@@ -238,7 +240,7 @@ $this->respond('POST', '/[i:id]/notify/?', function ($request, $response, $servi
 
     $mail->isHTML(true);
     $mail->Subject = $request->param('subject');
-    $mail->Body    = $request->param('message');
+    $mail->Body    = $msg;
 
     if ($mail->send()) {
         $service->flash("Deine Nachricht wurde verschickt", "success");
