@@ -128,7 +128,7 @@ $this->respond('POST', '/[i:id]/message/?', function ($request, $response, $serv
     $mail = createMailer();
 
     $mail->AddReplyTo($sender->mail, $sender->name);
-    $mail->SetFrom($conf->address, $conf->name);
+    $mail->SetFrom($conf->address, $sender->name . " | " . $conf->name);
 
     $mail->addAddress($player->mail, $player->name);
 

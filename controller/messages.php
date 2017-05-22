@@ -75,7 +75,7 @@ $this->respond('POST', '/?', function ($request, $response, $service) {
     $conf = getConfig('mail');
 
     $mail->AddReplyTo($sender->mail, $sender->name);
-    $mail->SetFrom($conf->address, $conf->name);
+    $mail->SetFrom($conf->address, $sender->name . " | " . $conf->name);
 
     foreach ($players as $player) {
         if (!empty($player['mail'])) {
