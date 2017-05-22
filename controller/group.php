@@ -66,23 +66,29 @@ $this->respond('POST', '/[i:id]/message/?', function ($request, $response, $serv
     $sender = R::load('player', $request->param('senderid'));
     keepUser($sender->id);
 
-    $conf   = getConfig('mail');
+    $conf = getConfig('mail');
 
     $mail = createMailer();
 
     $mail->AddReplyTo($sender->mail, $sender->name);
     $mail->SetFrom($conf->address, $sender->name . " | " . $conf->name);
 
-    
+    $mail->addAddress($conf->address);
 
     foreach ($players as $player) {
-        $mail->addAddress($player->mail, $player->name);
+        if( $conf->address != $player->mail ){
+            $mail->addBCC($player->mail, $player->name);
+        }
     }
+
+    $msg = $request->param('message');
+
+    $msg .= '<br/><br/><p>-------------</p><p>Diese Nachricht wurde verschickt von <a href="'.getBase().'player/'. $sender->id .'">'. $sender->name .'</a> an alle Mitglieder der Gruppe <a href="'.getBase().'group/'. $id .'">'. $tag .'</a>.</p>';
 
     $mail->isHTML(true);
 
     $mail->Subject = $request->param('subject');
-    $mail->Body    = $request->param('message');
+    $mail->Body    = $msg;
 
     if ($mail->send()) {
         $service->flash('Deine Nachricht an die Gruppe ' . $tag . ' wurde versendet.', 'success');
