@@ -38,10 +38,10 @@
 			<?php  foreach($this->mails as $mail): ?>
 			<tr>
 				<td class="text-left">
-					<a class="subject" href="<?= getBase() ?>message/<?= $mail->msgno ?>"><?= $mail->subject ?></a>
+					<a class="subject" href="<?= getBase() ?>message/<?= $mail->msgno ?>"><?= iconv_mime_decode($mail->subject) ?></a>
 				</td>
 				<td>
-					<span class="sender"><?= $mail->from ?></span>
+					<span class="sender"><?= iconv_mime_decode($mail->from) ?></span>
 				</td>
 				<td class="text-right text">
 					<span class="date text-hide"><?= strtotime($mail->date) ?></span>
