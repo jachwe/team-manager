@@ -224,7 +224,7 @@ $this->respond('POST', '/[i:id]/notify/?', function ($request, $response, $servi
     $mail = createMailer();
 
     $mail->AddReplyTo($sender->mail, $sender->name);
-    $mail->SetFrom($conf->address, $sender->name . " | " . $conf->name);
+    $mail->SetFrom($sender->mail, $sender->name . " | " . $conf->name);
 
     $msg = $request->param('message');
 
