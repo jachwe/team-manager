@@ -18,7 +18,7 @@ if($conf->dev){
 $_imap = imap_setup(true);
 $imap = $_imap->handle;
 
-$unseen = imap_search($imap, 'ALL UNDELETED');
+$unseen = imap_search($imap, 'ALL UNDELETED TO "'. $conf->mail->address .'" ');
 
 if(!$unseen){
 	die(date("d.m.Y H:i",time()) . ' -> NO MESSAGES');
