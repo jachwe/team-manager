@@ -1,57 +1,69 @@
 <div class="page-header">
-    <div class="btn-toolbar pull-right">
-        <div class="btn-group">
-        </div>
+  <div class="btn-toolbar pull-right">
+    <div class="btn-group">
     </div>
-    <h1>
-        Nachrichten <small>Abonnenten</small>
-    </h1>
+  </div>
+  <h1>
+    Nachrichten <small>Abonnenten</small>
+  </h1>
+  <div class="">
     <div class="">
-        <div class="">
-        	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newSubscriberModal"> AbonnentIn(nen) hinzufügen </button>
-            <a class="btn btn-primary" href="<?= getBase() ?>messages/">
-                Archiv
-            </a>
-        </div>
-    </div>
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newSubscriberModal"> AbonnentIn(nen) hinzufügen </button>
+     <a class="btn btn-primary" href="<?= getBase() ?>messages/"> Archiv </a>
+   </div>
+ </div>
 </div>
 
-<div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    Empfänger*Innen
-                </h3>
-            </div>
-            <div class="panel-body">
-                <div class="list-group">
-                    <?php foreach($this->subscriber as $subscriber): ?>
-                    <div class="list-group-item clearfix">
-                    	<div class="btn-group pull-right">
-                    		<button class="btn btn-default"><i class="fa fa-fw fa-edit"></i></button>
-                    	</div>
-                        <a href="mailto:<?= $subscriber->mail ?>"><?= $subscriber->mail ?></a>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
+<div id="sublist" class="table-responsive">
+  <table class="table table-striped table-hover table-condensed">
+    <thead>
+      <tr>
+        <th colspan="4">
+          <input class="search form-control" placeholder="Suche..." />
+        </th>
+      </tr>
+      <tr>
+        <th><a href="#" class="sort text-left" data-sort="email">Email</a></th>
+        <th><a href="#" class="sort text-left" data-sort="date">Datum</a></th>
+        <th><a href="#" class="text-right"></a></th>
+      </tr>
+    </thead>
+    <tbody class="list">
+      <?php  foreach($this->subscriber as $subscriber): ?>
+        <tr>
+          <td class="text-left">
+            <span class="email"><?= $subscriber->mail ?></span>
+          </td>
+          <td class="date text-left"><?= date( "d.m.y", $subscriber->joined ) ?></td>
+
+          <td class="link text-right">
+            <a href="<?=getBase()?>messages/subscriber/<?= $subscriber->id ?>/remove" class="btn btn-danger btn-xs"><i class="fa fa-fw fa-remove"></i></a>
+            <!-- <a href="#" class="btn btn-success btn-xs" data-toggle="modal" data-target="#convertSubscriberModal"><i class="fa fa-fw fa-user"></i></a> -->
+          </td>
+
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
+
 
 <div class="modal fade" id="newSubscriberModal">
   <form action="<?=getBase()?>messages/subscriber/add" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">AbonnentIn(nen) hinzufügen</h4>
-      </div>
-      <div class="modal-body">
-      <p>Mehrere Adressen mit Komma trennen oder in neue Zeile schreiben.</p>
-	      <textarea class="form-control" name="newmails" rows="10"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-primary">Speichern</button>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">AbonnentIn(nen) hinzufügen</h4>
+        </div>
+        <div class="modal-body">
+          <p>Mehrere Adressen mit Komma trennen oder in neue Zeile schreiben.</p>
+          <textarea class="form-control" name="newmails" rows="10"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Speichern</button>
+        </div>
       </div>
     </div>
-  </div>
   </form>
 </div>

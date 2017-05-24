@@ -123,9 +123,22 @@ $this->respond('POST', '/subscriber/add?', function ($request, $response, $servi
     foreach ($values as $value) {
         $s = R::dispense('subscriber');
         $s->mail = $value;
+        $s->joined = time();
         R::store($s);
     }
 
     $service->flash( count($values) . ' AbonnentIn(nen) wurden hinzugefügt','success');
+    $service->back();
+});
+
+$this->respond('/subscriber/[i:id]/remove?', function ($request, $response, $service) {
+
+    checkLogin();
+
+    $sub = R::load('subscriber',$request->id);
+
+    R::trash($sub);
+
+    $service->flash( $sub->mail . ' wurde vom Verteiler entfernt','success');
     $service->back();
 });
