@@ -245,7 +245,7 @@ $this->respond('POST', '/[i:id]/notify/?', function ($request, $response, $servi
     if ($mail->send()) {
         $service->flash("Deine Nachricht wurde verschickt", "success");
     } else {
-        $service->flash("Deine Nachricht konnte leider nicht verschickt werden", "danger");
+        $service->flash("Deine Nachricht konnte leider nicht verschickt werden. " . $mail->ErrorInfo, "danger");
     }
 
     $service->back();
