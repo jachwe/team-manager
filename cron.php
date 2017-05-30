@@ -79,7 +79,7 @@ foreach($unseen as $message_id){
 				}
 
 				
-    			$mail->SetFrom($conf->mail->address, $fromName . " | " . $conf->mail->name);
+    			$mail->SetFrom($conf->mail->noreply, $fromName . " | " . $conf->mail->name);
 
     			$mail->addAddress($fromMail,$fromName);
 

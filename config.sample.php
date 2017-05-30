@@ -32,6 +32,8 @@ return (object) array(
 
 	    'name'		=> 	"Carl Callahan",
 	    'address'	=>	"carl@callahan.de",
+
+	    'noreply'	=>	"noreply@callahan.de", //From address
 	    
 	    'host' 		=> 	"mail.mailserver.com",
 	    'user' 		=> 	"username",
