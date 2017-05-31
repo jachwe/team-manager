@@ -18,7 +18,7 @@ $this->respond('GET', '/?', function ($request, $response, $service) {
 
     function cmp($a, $b)
     {   
-        return $a->date < $b->date ? -1 : 1;
+        return strtotime($a->date) > strtotime($b->date) ? -1 : 1;
     }
 
     usort($mails, "cmp");

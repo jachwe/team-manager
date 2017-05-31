@@ -58,7 +58,7 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
 
     $service->player  = $player;
 
-    $service->events  = R::getAll('SELECT event.id as id, event.name as name, response.status_id as status FROM event JOIN response ON response.event_id = event.id WHERE response.player_id = ' . $player->id);
+    $service->events  = R::getAll('SELECT event.id as id, event.name as name, response.status_id as status FROM event JOIN response ON response.event_id = event.id WHERE response.player_id = ' . $player->id . " AND event.archived IS NOT 1");
     $service->balance = R::getCell('SELECT sum(value) as balance FROM payment WHERE player_id = ' . $player->id);
 
     $service->groups = R::getAll('SELECT tag.title, tag.id FROM tag JOIN player_tag ON player_tag.tag_id = tag.id WHERE player_tag.player_id = ' . $id);
