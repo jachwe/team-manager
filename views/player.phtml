@@ -10,10 +10,10 @@
         <table class="table table-condensed table-hover table-responsive table-stripes">
           <tbody>
             <?php foreach($this->events as $event) : ?>
-            <tr>
-              <td><a href="<?= getBase() . 'events/'. $event["id"] ?>"><?= $event['name'] ?></a></td>
-              <td><span class="label label-<?= $event['status'] == 1 ? 'success' : 'danger' ?> pull-right"><?= $event['status'] == 1 ? 'Zusage' : 'Absage' ?></span></td>
-            </tr>
+              <tr>
+                <td><a href="<?= getBase() . 'events/'. $event["id"] ?>"><?= $event['name'] ?></a></td>
+                <td><span class="label label-<?= $event['status'] == 1 ? 'success' : 'danger' ?> pull-right"><?= $event['status'] == 1 ? 'Zusage' : 'Absage' ?></span></td>
+              </tr>
             <?php endforeach; ?>
           </tbody>
         </table>
@@ -28,11 +28,11 @@
         <table class="table table-condensed table-hover table-responsive table-stripes">
           <tbody>
             <?php foreach($this->player->ownPaymentList as $payment) : ?>
-            <tr>
-              <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"><?= $payment->description ?></td>
-              <td class="col-xs-2"><?= date( "d.m.y", $payment->date ) ?></td>
-              <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap" class="col-xs-3 text-right text-<?= floatval($payment->value)<0 ? "danger" : "success" ?>"><?= number_format($payment->value,2)?> € </span></td>
-            </tr>
+              <tr>
+                <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap"><?= $payment->description ?></td>
+                <td class="col-xs-2"><?= date( "d.m.y", $payment->date ) ?></td>
+                <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap" class="col-xs-3 text-right text-<?= floatval($payment->value)<0 ? "danger" : "success" ?>"><?= number_format($payment->value,2)?> € </span></td>
+              </tr>
             <?php endforeach; ?>
           </tbody>
         </table>
@@ -44,11 +44,11 @@
       </div>
       <div class="panel-body">
         <div class="list-group">
-            <?php foreach($this->groups as $group):?>
+          <?php foreach($this->groups as $group):?>
             <div class="list-group-item clearfix">
               <a href="<?= getBase() . 'group/' . $group['id'] ?>"><?= $group['title'] ?></a>
             </div>
-            <?php endforeach;?>
+          <?php endforeach;?>
         </div>
       </div>
     </div>
@@ -62,6 +62,9 @@
         <h3 class="panel-title"><i class="fa fa-cog fa-fw"></i> Optionen </h3>
       </div>
       <div class="panel-body">
+        <div class="form-group">
+          Telefon: <?= $this->player->phone ?>
+        </div>
         <div class="form-group">
           <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#messageModal"> Nachricht an <?= $this->player->sex == 'w' ? 'Spielerin' : 'Spieler' ?> </button>
         </div>
@@ -133,11 +136,11 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-          <select id="messagesender" required="" name="senderid">
-            <option value="">Absender wählen</option>
-            <?= getPlayerSingleOptions(true) ?>
+            <select id="messagesender" required="" name="senderid">
+              <option value="">Absender wählen</option>
+              <?= getPlayerSingleOptions(true) ?>
             </select>
-        </div>
+          </div>
           <div class="form-group">
             <label>Betreff</label>
             <input type="text" name="subject" class="form-control">

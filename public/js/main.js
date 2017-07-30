@@ -122,6 +122,10 @@
 
     });
 
+    window.confirmForm = function(e){
+        return confirm("Willst du das wirklich tun?");
+    }
+
 
     $('#eventcalendar').calendar({
         language: 'de',

@@ -23,254 +23,247 @@
               <div class="panel-body">
                 <ul class="list-group sortable" data-eventid="<?= $this->event->id ?>">
                   <?php foreach ($this->positive_w as $count => $player): ?>
-                     <?=$count == $this->event->girls_max ? ' <li class="waitingline list-group-item">Warteliste</li>' : ''?>
-                      <li class="list-group-item" data-playerid="<?= $player['id'] ?>"><a href="<?=getBase()?>player/<?=$player['id']?>"><?=$player['name']?></a></li>
+                   <?=$count == $this->event->girls_max ? ' <li class="waitingline list-group-item">Warteliste</li>' : ''?>
+                   <li class="list-group-item" data-playerid="<?= $player['id'] ?>"><a href="<?=getBase()?>player/<?=$player['id']?>"><?=$player['name']?></a></li>
 
-                  <?php endforeach;?>
-                </ul>
-              </div>
+                 <?php endforeach;?>
+               </ul>
+             </div>
+           </div>
+         </div>
+
+         <div class="col-md-4">
+          <div class="panel panel-<?=$this->boys_status?>">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-mars"></i> Herren (<?=count($this->positive_m)?>/<?=$this->event->boys_max?>)</h3>
             </div>
+            <div class="panel-body">
+              <ul class="list-group sortable" data-eventid="<?= $this->event->id ?>">
+                <?php foreach ($this->positive_m as $count => $player): ?>
+                 <?=$count == $this->event->boys_max ? ' <li class="waitingline list-group-item">Warteliste</li>' : ''?>
+                 <li class="list-group-item" data-playerid="<?= $player['id'] ?>">
+                  <a href="<?=getBase()?>player/<?=$player['id']?>"><?=$player['name']?></a>
+                </li>
+              <?php endforeach;?>
+            </ul>
           </div>
-
-          <div class="col-md-4">
-            <div class="panel panel-<?=$this->boys_status?>">
-              <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-mars"></i> Herren (<?=count($this->positive_m)?>/<?=$this->event->boys_max?>)</h3>
-              </div>
-              <div class="panel-body">
-                <ul class="list-group sortable" data-eventid="<?= $this->event->id ?>">
-                  <?php foreach ($this->positive_m as $count => $player): ?>
-                     <?=$count == $this->event->boys_max ? ' <li class="waitingline list-group-item">Warteliste</li>' : ''?>
-                      <li class="list-group-item" data-playerid="<?= $player['id'] ?>">
-                        <a href="<?=getBase()?>player/<?=$player['id']?>"><?=$player['name']?></a>
-                      </li>
-                  <?php endforeach;?>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-ban"></i> Absagen (<?=$this->negativecount?>)</h3>
-              </div>
-              <div class="panel-body">
-                <ul class="list-group">
-                  <?php foreach ($this->negative as $response): ?>
-                      <li class="list-group-item" data-playerid="<?= $response->player['id'] ?>"><a href="<?=getBase()?>player/<?=$response->player['id']?>"><?=$response->player['name']?></a></li>
-                  <?php endforeach;?>
-                </ul>
-              </div>
-            </div>
-          </div>
-
         </div>
-
-
-        <form class="row" action="<?=getBase() . 'events/' . $this->event->id?>/addPlayer" method="post">
-          <div class="col-md-4">
-            <select id="messagereceiver" multiple="multiple">
-            <?= getPlayerListOptions(true,true) ?>
-            </select>
-          </div>
-          <div class="col-md-4">
-            <select name="status" class="form-control">
-              <option value="yes">Ja ( zusagen )</option>
-              <option value="no">Nein ( absagen )</option>
-              <!-- <option value="maybe">Vielleicht</option> -->
-            </select>
-          </div>
-          <div class="col-md-4">
-            <button type="submit" class="btn btn-primary form-control" >Antworten</button>
-          </div>
-        </form>
-
-
       </div>
+
+      <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-ban"></i> Absagen (<?=$this->negativecount?>)</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="list-group">
+              <?php foreach ($this->negative as $response): ?>
+                <li class="list-group-item" data-playerid="<?= $response->player['id'] ?>"><a href="<?=getBase()?>player/<?=$response->player['id']?>"><?=$response->player['name']?></a></li>
+              <?php endforeach;?>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
 
 
-    <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-          <h3 class="panel-title pull-left"><i class="fa fa-fw fa-comments"></i> Diskussion</h3>
-          <div class="btn-group pull-right">
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#commentModal"> Kommentieren </button>
-          </div>
+    <form class="row" action="<?=getBase() . 'events/' . $this->event->id?>/addPlayer" method="post">
+      <div class="col-md-4">
+        <select id="messagereceiver" multiple="multiple">
+          <?= getPlayerListOptions(true,true) ?>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select name="status" class="form-control">
+          <option value="yes">Ja ( zusagen )</option>
+          <option value="no">Nein ( absagen )</option>
+          <!-- <option value="maybe">Vielleicht</option> -->
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary form-control" >Antworten</button>
+      </div>
+    </form>
+
+    <form class="row" action="<?=getBase() . 'events/' . $this->event->id?>/addPickup" method="post">
+      <div class="col-md-4">
+        <input type="text" class="form-control" name="pickupname" placeholder="Petra Pickup">
+      </div>
+      <div class="col-md-4">
+      <select class="form-control" name="pickupsex">
+          <option value="w">Weiblich</option>
+          <option value="m">Männlich</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary form-control" >Pickup Hinzufügen</button>
+      </div>
+    </form>
 
 
-        </div>
-        <div class="panel-body">
-          <?php foreach ($this->event->ownCommentList as $comment): ?>
-            <div>
-              <div class="pull-right"><small><?=date("d.m.y H:i", $comment->time)?></small></div>
-              <div><strong><?=$comment->author?></strong></div>
-              <div><?=$comment->message?></div>
-            </div>
-            <hr/>
-          <?php endforeach;?>
-        </div>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading clearfix">
+    <h3 class="panel-title pull-left"><i class="fa fa-fw fa-comments"></i> Diskussion</h3>
+    <div class="btn-group pull-right">
+      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#commentModal"> Kommentieren </button>
+    </div>
+
+
+  </div>
+  <div class="panel-body">
+    <?php foreach ($this->event->ownCommentList as $comment): ?>
+      <div>
+        <div class="pull-right"><small><?=date("d.m.y H:i", $comment->time)?></small></div>
+        <div><strong><?=$comment->author?></strong></div>
+        <div><?=$comment->message?></div>
+      </div>
+      <hr/>
+    <?php endforeach;?>
+  </div>
+</div>
+</div>
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><i class="fa fa-cog fa-fw"></i> Optionen </h3>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#notifyModal"> Nachricht an Teilnehmer*Innen </button>
+      </div>
+      <div class="form-group">
+        <a href="<?=getBase() . 'events/' . $this->event->id?>/edit" class="form-control btn btn-primary">Termin bearbeiten</a>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-danger form-control" data-toggle="modal" data-target="#deleteModal"> Termin archivieren </button>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-cog fa-fw"></i> Optionen </h3>
-        </div>
-        <div class="panel-body">
-          <div class="form-group">
-            <button type="button" class="btn btn-info form-control" data-toggle="modal" data-target="#notifyModal"> Nachricht an Teilnehmer*Innen </button>
-          </div>
-          <div class="form-group">
-            <a href="<?=getBase() . 'events/' . $this->event->id?>/edit" class="form-control btn btn-primary">Termin bearbeiten</a>
-          </div>
-          <div class="form-group">
-            <button type="button" class="btn btn-danger form-control" data-toggle="modal" data-target="#deleteModal"> Termin archivieren </button>
-          </div>
-        </div>
-      </div>
+  </div>
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-fw fa-info"></i> Informationen</h3>
-        </div>
-        <div class="panel-body">
-          <h5>Datum</h5>
-          <p><?=$this->start?> - <?=$this->end?> (<?=$this->days?> Tage)</p>
-          <h5>Beschreibung</h5>
-          <div class="preformatted"><?=$this->event->description?><?=empty($this->event->description) ? "<i>Keine Beschreibung</i>" : ""?></div>
-        </div>
-      </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><i class="fa fa-fw fa-info"></i> Informationen</h3>
+    </div>
+    <div class="panel-body">
+      <h5>Datum</h5>
+      <p><?=$this->start?> - <?=$this->end?> (<?=$this->days?> Tage)</p>
+      <h5>Beschreibung</h5>
+      <div class="preformatted"><?=$this->event->description?><?=empty($this->event->description) ? "<i>Keine Beschreibung</i>" : ""?></div>
+    </div>
+  </div>
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-fw fa-money"></i> Kosten</h3>
-        </div>
-        <div class="panel-body">
-          <div><i class="fa fa-fw fa-lg fa-group"></i> Teamfee: <?=$this->event->teamfee?>€</div>
-          <div><i class="fa fa-fw fa-lg fa-user"></i> Playersfee: <?=$this->event->playersfee?>€</div>
-          <div>&nbsp;</div>
-          <div>Aktuelle Kosten pro Person: <?=number_format(floatval($this->costpp), 2)?>€</div>
-          <div>Kosten bei maximaler Personenzahl: <?=number_format(floatval($this->costmin), 2)?>€</div>
-          <div>&nbsp;</div>
-          <div>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#payModal" <?=intval($this->event->teamfee) == 0 || $this->event->billed ? ' disabled="disabled"' : ""?>>Teamfee abrechnen</button>
-          </div>
-          <?php if ($this->event->billed): ?>
-          <div>
-            Abgerechnet am <?=date("d.m.y", $event->billed)?>
-          </div>
-          <?php endif;?>
-        </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-fw fa-map"></i> Anfahrt</h3>
-        </div>
-      <div class="panel-body">
-        <div class="gmapframe">
-          <iframe class="gmap" frameborder="0" src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyCWTZGawHSuqFRhYpa6dGM-sb8QKEnmMbA&origin=Columbiadamm,Berlin&destination=<?=urlencode($this->event->location)?>" allowfullscreen> </iframe>
-        </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title"><i class="fa fa-fw fa-map"></i> Anfahrt</h3>
+    </div>
+    <div class="panel-body">
+      <div class="gmapframe">
+        <iframe class="gmap" frameborder="0" src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyCWTZGawHSuqFRhYpa6dGM-sb8QKEnmMbA&origin=Columbiadamm,Berlin&destination=<?=urlencode($this->event->location)?>" allowfullscreen> </iframe>
       </div>
     </div>
   </div>
 </div>
+</div>
 
 <div class="modal fade" id="payModal" tabindex="-1" role="dialog">
   <form action="<?=getBase()?>events/<?=$this->event->id?>/splitfee" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Teamfee abrechnen</h4>
-      </div>
-      <div class="modal-body">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Teamfee abrechnen</h4>
+        </div>
+        <div class="modal-body">
 
-        Bist du dir sicher, dass du die Teamfee abrechnen möchtest?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-success">Ja, Weiter</button>
+          Bist du dir sicher, dass du die Teamfee abrechnen möchtest?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-success">Ja, Weiter</button>
+        </div>
       </div>
     </div>
-  </div>
   </form>
 </div>
 
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
   <form action="<?=getBase()?>events/<?=$this->event->id?>/delete" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Termin löschen</h4>
-      </div>
-      <div class="modal-body">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Termin löschen</h4>
+        </div>
+        <div class="modal-body">
 
-        Möchtest Du <?=$this->event->name?> wirklich löschen?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-danger">Löschen</button>
+          Möchtest Du <?=$this->event->name?> wirklich löschen?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-danger">Löschen</button>
+        </div>
       </div>
     </div>
-  </div>
   </form>
 </div>
 
 <div class="modal fade" id="commentModal" tabindex="-1" role="dialog">
   <form action="<?=getBase()?>events/<?=$this->event->id?>/comment" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Kommentar schreiben</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="author"></label>
-          <input id="author" name="author" class="playerselect form-control" type="text" data-provide="typeahead" autocomplete="off" placeholder="Name">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Kommentar schreiben</h4>
         </div>
-        <div class="form-group">
-          <label for="comment"></label>
-          <textarea id="comment" name="message" class="form-control" placeholder="Dein Kommentar"></textarea>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="author"></label>
+            <input id="author" name="author" class="playerselect form-control" type="text" data-provide="typeahead" autocomplete="off" placeholder="Name">
+          </div>
+          <div class="form-group">
+            <label for="comment"></label>
+            <textarea id="comment" name="message" class="form-control" placeholder="Dein Kommentar"></textarea>
+          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-primary">Abschicken</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Abschicken</button>
+        </div>
       </div>
     </div>
-  </div>
   </form>
 </div>
 
 <div class="modal fade" id="notifyModal" tabindex="-1" role="dialog">
   <form action="<?=getBase()?>events/<?=$this->event->id?>/notify" method="POST">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Nachricht an Teilnehmer</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <select id="messagesender" required="" name="senderid">
-            <option value="">Absender wählen</option>
-            <?= getPlayerSingleOptions(true) ?>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Nachricht an Teilnehmer</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <select id="messagesender" required="" name="senderid">
+              <option value="">Absender wählen</option>
+              <?= getPlayerSingleOptions(true) ?>
             </select>
+          </div>
+          <div class="form-group">
+            <label for="subject"></label>
+            <input id="subject" name="subject" class="playerselect form-control" type="text" data-provide="typeahead" autocomplete="off" placeholder="Betreff">
+          </div>
+          <div class="form-group">
+            <label for="comment"></label>
+            <textarea name="message" id="summernote" placeholder="Nachricht"></textarea>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="subject"></label>
-          <input id="subject" name="subject" class="playerselect form-control" type="text" data-provide="typeahead" autocomplete="off" placeholder="Betreff">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+          <button type="submit" class="btn btn-primary">Abschicken</button>
         </div>
-        <div class="form-group">
-          <label for="comment"></label>
-          <textarea name="message" id="summernote" placeholder="Nachricht"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-        <button type="submit" class="btn btn-primary">Abschicken</button>
       </div>
     </div>
-  </div>
   </form>
 </div>

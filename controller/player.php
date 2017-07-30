@@ -34,6 +34,7 @@ $this->respond('POST', '/?', function ($request, $response, $service, $app) {
     checkLogin();
 
     $service->validateParam('name')->notNull();
+    $service->validateParam('mail')->notNull();
 
     $player = R::dispense('player');
 

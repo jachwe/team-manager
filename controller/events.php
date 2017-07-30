@@ -4,32 +4,32 @@ $this->respond('GET', '/?', function ($request, $response, $service) {
     checkLogin();
 
     $q = "SELECT
-            e.name,
-            e.id,
-            e.location,
-            e.date,
-            strftime('%s',date, 'unixepoch','+' || ifnull(days,2) || ' days','-1 day') as end,
-            e.status,
-            e.girls_min,
-            e.girls_max,
-            e.boys_min,
-            e.boys_max,
-                (SELECT COUNT(response.id)
-                FROM response
-                JOIN player
-                ON player.id = response.player_id
-                WHERE response.event_id = e.id
-                AND player.sex = 'w'
-                AND response.status_id = 1) as girls,
-                (SELECT COUNT(response.id)
-                FROM response
-                JOIN player
-                ON player.id = response.player_id
-                WHERE response.event_id = e.id
-                AND player.sex = 'm'
-                AND response.status_id = 1) as boys
-            FROM event as e WHERE archived IS NOT 1
-            ORDER by date";
+    e.name,
+    e.id,
+    e.location,
+    e.date,
+    strftime('%s',date, 'unixepoch','+' || ifnull(days,2) || ' days','-1 day') as end,
+    e.status,
+    e.girls_min,
+    e.girls_max,
+    e.boys_min,
+    e.boys_max,
+    (SELECT COUNT(response.id)
+    FROM response
+    JOIN player
+    ON player.id = response.player_id
+    WHERE response.event_id = e.id
+    AND player.sex = 'w'
+    AND response.status_id = 1) as girls,
+    (SELECT COUNT(response.id)
+    FROM response
+    JOIN player
+    ON player.id = response.player_id
+    WHERE response.event_id = e.id
+    AND player.sex = 'm'
+    AND response.status_id = 1) as boys
+    FROM event as e WHERE archived IS NOT 1
+    ORDER by date";
 
     $service->events = R::getAll($q);
     $service->render('views/events.phtml');
@@ -56,7 +56,7 @@ $this->respond('GET', '/new/?', function ($request, $response, $service, $app) {
         'girls_max'   => 99,
         'status'      => 'optional',
 
-    );
+        );
 
     $service->render('./views/event_edit.phtml');
 
@@ -99,13 +99,13 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
     $service->end   = date('d.m.Y', $endts);
 
     $q = "SELECT player.name as name, player.id as id , response.time as time
-                FROM player
-                JOIN response
-                ON player.id = response.player_id
-                WHERE response.event_id = :event
-                AND response.status_id = 1
-                AND player.sex = :sex
-                ORDER BY response.spotorder";
+    FROM player
+    JOIN response
+    ON player.id = response.player_id
+    WHERE response.event_id = :event
+    AND response.status_id = 1
+    AND player.sex = :sex
+    ORDER BY response.spotorder";
 
     $service->positive_m = R::getAll($q, array(':event' => $event->id, ':sex' => 'm'));
     $service->positive_w = R::getAll($q, array(':event' => $event->id, ':sex' => 'w'));
@@ -313,6 +313,27 @@ $this->respond('POST', '/[:id]/addPlayer/?', function ($request, $response, $ser
     $service->back();
 });
 
+$this->respond('POST', '/[:id]/addPickup/?', function ($request, $response, $service) {
+
+    checkLogin();
+    // R::fancyDebug( TRUE );
+    $id    = $request->id;
+    $event = R::load('event', $id);
+
+    $name = $request->param('pickupname');
+    $sex = $request->param('pickupsex');
+
+    $pickup = R::dispense('pickup');
+    $pickup->name = $name;
+    $pickup->sex = $sex;
+    $pickup->time = time();
+    $pickup->event = $event;
+
+    R::store($pickup);
+
+    $service->back();
+});
+
 $this->respond('POST', '/[:id]/order?', function ($request, $response, $service) {
 
     // checkLogin();
@@ -327,7 +348,7 @@ $this->respond('POST', '/[:id]/order?', function ($request, $response, $service)
         $r = R::findOne('response',' event_id = :eid AND player_id = :pid', array(
             ":eid"  => $id,
             ":pid" => $pid
-        ));
+            ));
         
         if($r){
             $r->spotorder = $order;
@@ -363,11 +384,11 @@ $this->respond('/calendar.ics/?', function ($request, $response, $service) {
         $endDT->modify('+' . $days . ' day');
 
         $vEvent
-            ->setDtStart($startDT)
-            ->setDtEnd($endDT)
-            ->setNoTime(true)
-            ->setSummary($event['name'])
-            ->setLocation($event['location']);
+        ->setDtStart($startDT)
+        ->setDtEnd($endDT)
+        ->setNoTime(true)
+        ->setSummary($event['name'])
+        ->setLocation($event['location']);
 
         $vCalendar->addComponent($vEvent);
 

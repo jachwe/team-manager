@@ -126,6 +126,8 @@ $this->respond('POST', '/[:id]/remove/?', function ($request, $response, $servic
 
     $player = R::load('player', $request->param('playerid'));
 
+    
+
     R::untag($player, $tag);
 
     $service->back();
