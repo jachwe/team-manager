@@ -24,15 +24,26 @@
                 <ul class="list-group sortable" data-eventid="<?= $this->event->id ?>">
                   <?php foreach ($this->positive_w as $count => $player): ?>
                    <?=$count == $this->event->girls_max ? ' <li class="waitingline list-group-item">Warteliste</li>' : ''?>
-                   <li class="list-group-item" data-playerid="<?= $player['id'] ?>"><a href="<?=getBase()?>player/<?=$player['id']?>"><?=$player['name']?></a></li>
+                   <li class="list-group-item clearfix" data-playerid="<?= $player['id'] ?>">
+                    <form action="<?=getBase() . 'events/' . $this->event->id?>/removePickup/<?= $player['id'] ?>" method="post">
 
-                 <?php endforeach;?>
-               </ul>
-             </div>
-           </div>
-         </div>
+                      <a href="<?=getBase()?>player/<?=$player['id']?>"><?=$player['name']?></a>
+                      <?php  if( $player['isPickup'] == "1" ): ?>
+                        <button type="submit" class="btn btn-danger btn-xs pull-right">X</button>
+                      <?php endif;?>
+                    </form>
 
-         <div class="col-md-4">
+                  </li>
+
+
+
+                <?php endforeach;?>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
           <div class="panel panel-<?=$this->boys_status?>">
             <div class="panel-heading">
               <h3 class="panel-title"><i class="fa fa-mars"></i> Herren (<?=count($this->positive_m)?>/<?=$this->event->boys_max?>)</h3>
@@ -41,9 +52,16 @@
               <ul class="list-group sortable" data-eventid="<?= $this->event->id ?>">
                 <?php foreach ($this->positive_m as $count => $player): ?>
                  <?=$count == $this->event->boys_max ? ' <li class="waitingline list-group-item">Warteliste</li>' : ''?>
-                 <li class="list-group-item" data-playerid="<?= $player['id'] ?>">
-                  <a href="<?=getBase()?>player/<?=$player['id']?>"><?=$player['name']?></a>
-                </li>
+                 <li class="list-group-item clearfix" data-playerid="<?= $player['id'] ?>">
+                    <form action="<?=getBase() . 'events/' . $this->event->id?>/removePickup/<?= $player['id'] ?>" method="post">
+
+                      <a href="<?=getBase()?>player/<?=$player['id']?>"><?=$player['name']?></a>
+                      <?php  if( $player['isPickup'] == "1" ): ?>
+                        <button type="submit" class="btn btn-danger btn-xs pull-right">X</button>
+                      <?php endif;?>
+                    </form>
+
+                  </li>
               <?php endforeach;?>
             </ul>
           </div>
@@ -91,7 +109,7 @@
         <input type="text" class="form-control" name="pickupname" placeholder="Petra Pickup">
       </div>
       <div class="col-md-4">
-      <select class="form-control" name="pickupsex">
+        <select class="form-control" name="pickupsex">
           <option value="w">Weiblich</option>
           <option value="m">Männlich</option>
         </select>

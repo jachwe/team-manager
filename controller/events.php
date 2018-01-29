@@ -91,6 +91,8 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
     $id    = $request->id;
     $event = R::load('event', $id);
 
+    // R::fancyDebug( TRUE );
+
     $service->event = $event;
 
     $service->start = date('d.m.Y', $event->date);
@@ -98,14 +100,18 @@ $this->respond('GET', '/[i:id]/?', function ($request, $response, $service) {
     $endts = strtotime('+' . ($service->days - 1) . ' days', $event->date);
     $service->end   = date('d.m.Y', $endts);
 
-    $q = "SELECT player.name as name, player.id as id , response.time as time
+    $q = "SELECT player.name,player.id, 0 as isPickup, response.time as time
     FROM player
     JOIN response
     ON player.id = response.player_id
     WHERE response.event_id = :event
     AND response.status_id = 1
     AND player.sex = :sex
-    ORDER BY response.spotorder";
+    UNION ALL
+    SELECT name,id, 1 as isPickup, time
+    FROM pickup
+    WHERE sex = :sex
+    AND event_id = :event";
 
     $service->positive_m = R::getAll($q, array(':event' => $event->id, ':sex' => 'm'));
     $service->positive_w = R::getAll($q, array(':event' => $event->id, ':sex' => 'w'));
@@ -330,6 +336,20 @@ $this->respond('POST', '/[:id]/addPickup/?', function ($request, $response, $ser
     $pickup->event = $event;
 
     R::store($pickup);
+
+    $service->back();
+});
+
+$this->respond('POST', '/[:id]/removePickup/[:pickup]/?', function ($request, $response, $service) {
+
+    checkLogin();
+    // R::fancyDebug( TRUE );
+    $id    = $request->id;
+    $pickup    = $request->pickup;
+    
+    $p = R::load('pickup',$pickup);
+
+    R::trash($p);
 
     $service->back();
 });
