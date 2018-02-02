@@ -1,5 +1,11 @@
 <h1 class="page-header"><?= $this->player->sex == 'w' ? 'Spielerin' : 'Spieler' ?> <small>Profil</small></h1>
 <h2>#<?= $this->player->number ?> - <?= $this->player->name ?></h2>
+
+<div>
+  <h4>Email: <a href="mailto:<?= $this->player->mail ?>"><?= $this->player->mail ?></a></h4>
+  <h4>Bezahlung: <?= $this->player->iban ?></h4>
+</div>
+
 <div class="row">
   <div class="col-md-9">
     <div class="panel panel-default">

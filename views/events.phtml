@@ -38,9 +38,9 @@
         </th>
       </tr>
       <tr>
+        <th class="text-center"><a href="#" class="sort" data-sort="date">Datum</a></th>
         <th class="text-left"><a href="#" class="sort" data-sort="name">Titel</a></th>
         <th class="text-left"><a href="#" class="sort" data-sort="location">Ort</a></th>
-        <th class="text-center"><a href="#" class="sort" data-sort="date">Datum</a></th>
         <th class="text-center"><a href="#" class="sort" data-sort="status">Status</a></th>
         <th class="text-center hidden-xs"><a href="#" class="sort" data-sort="count">Zusagen</a></th>
       <tr>
@@ -48,9 +48,9 @@
     <tbody class="list">
       <?php foreach($this->events as $event): ?>
       <tr class="eventdata" data-id="<?= $event['id'] ?>" data-title="<?= $event['name'] ?>" data-location="<?= $event['location'] ?>" data-start="<?= $event['date'] * 1000 ?>" data-end="<?= $event['end'] * 1000 ?>">
+        <td class="text-center"><span class="date text-hide"><?= $event['date'] ?></span><?= date( "d.m.Y", $event['date']) ?></td>
         <td><a class="name" href="<?= getBase() ?>events/<?= $event['id'] ?>"><?= $event['name'] ?></a></td>
         <td class="location"><?= $event['location'] ?></td>
-        <td class="text-center"><span class="date text-hide"><?= $event['date'] ?></span><?= date( "d.m.Y", $event['date']) ?></td>
         <td class="text-center"><span class="status label label-<?= status2class($event['status']) ?>"><?= status2text($event['status']) ?></span></td>
         <td class="text-center"><span class="count"><?= $event['boys'] + $event['girls'] ?></span>&nbsp;&nbsp;<small>( <?= $event['boys']?> <i class="fa fa-mars"></i> / <?=$event['girls'] ?> <i class="fa fa-venus"></i> )</small></td>
       </tr>
